@@ -1,13 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
 import uploadReceipt from "@/lib/uploadReceipt";
 import validateFile from "@/lib/validateFile";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function ImageForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -78,32 +86,39 @@ export default function ImageForm() {
   }
 
   return (
-    <div className="flex flex-col">
-      <Label className="font-normal text-2xl mb-4">Upload a receipt:</Label>
-
-      <Input
-        className="max-w-80 hover:cursor-pointer"
-        type="file"
-        onChange={onChange}
-      />
-
-      <Button
-        variant="outline"
-        className="mt-4 hover:cursor-pointer"
-        onClick={onClick}
-        disabled={loading}
-      >
-        {loading ? <LoaderCircle className="animate-spin" /> : <Upload />}
-        {loading ? "Uploading..." : "Upload"}
-      </Button>
-
-      {showPopup && (
-        <Popup
-          title={popupTitle}
-          description={popupDescription}
-          onClose={() => setShowPopup(false)}
+    <Card>
+      <CardHeader>
+        <CardTitle>Upload a receipt</CardTitle>
+        <CardDescription>
+          Upload an image of a receipt. Must be a PNG, JPEG, GIF, WEBP, TIFF,
+          HEIC, or PDF.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Input
+          className="w-100 hover:cursor-pointer"
+          type="file"
+          onChange={onChange}
         />
-      )}
-    </div>
+
+        <Button
+          variant="outline"
+          className="mt-4 w-full hover:cursor-pointer"
+          onClick={onClick}
+          disabled={loading}
+        >
+          {loading ? <LoaderCircle className="animate-spin" /> : <Upload />}
+          {loading ? "Uploading..." : "Upload"}
+        </Button>
+
+        {showPopup && (
+          <Popup
+            title={popupTitle}
+            description={popupDescription}
+            onClose={() => setShowPopup(false)}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 }

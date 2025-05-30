@@ -8,6 +8,12 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import type PopupProps from "@/types/popupProps";
+import { Open_Sans } from "next/font/google";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function Popup({ onClose, title, description }: PopupProps) {
   return (
@@ -17,7 +23,7 @@ export default function Popup({ onClose, title, description }: PopupProps) {
         if (!open) onClose();
       }}
     >
-      <AlertDialogContent>
+      <AlertDialogContent className={openSans.className}>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
