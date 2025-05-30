@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { EB_Garamond, Merriweather } from "next/font/google";
+import { EB_Garamond } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,10 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ebGaramond.className}>
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-1 flex flex-col">{children}</main>
-        </div>
+        <Navbar />
+        <main className="flex flex-col min-h-screen">{children}</main>
         <Footer />
       </body>
     </html>

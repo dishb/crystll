@@ -6,6 +6,8 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
+import uploadReceipt from "@/lib/uploadReceipt";
+import validateFile from "@/lib/validateFile";
 
 export default function ImageForm() {
   const [file, setFile] = useState<File | null>(null);
@@ -35,17 +37,7 @@ export default function ImageForm() {
       );
 
       return;
-    } else if (
-      ![
-        "image/png",
-        "image/jpeg",
-        "image/gif",
-        "image/webp",
-        "image/tiff",
-        "image/heic",
-        "application/pdf",
-      ].includes(file.type)
-    ) {
+    } else if (validateFile(file) === false) {
       createPopup(
         "Invalid file type",
         "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF)."
@@ -55,14 +47,7 @@ export default function ImageForm() {
     }
 
     setLoading(true);
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const res = await fetch("/api/upload-receipt", {
-      method: "POST",
-      body: formData,
-    });
+    const res = await uploadReceipt(file);
 
     if (!res.ok) {
       if (res.status === 404) {
@@ -82,7 +67,7 @@ export default function ImageForm() {
         );
       } else {
         createPopup(
-          `Error while processing file`,
+          "Error while processing file",
           "An error occurred while processing your request. Please report this issue to the developers."
         );
       }
@@ -103,7 +88,7 @@ export default function ImageForm() {
       />
 
       <Button
-        variant="ocean"
+        variant="outline"
         className="mt-4 hover:cursor-pointer"
         onClick={onClick}
         disabled={loading}

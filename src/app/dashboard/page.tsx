@@ -1,9 +1,15 @@
 import ImageForm from "@/components/ImageForm";
 import DataTable from "@/components/DataTable";
+import { Open_Sans } from "next/font/google";
 
-export default function Home() {
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+export default function Page() {
   return (
-    <div className="flex flex-col items-center">
+    <div className={`flex flex-col items-center ${openSans.className}`}>
       <div className="flex flex-col items-center mt-10 w-[80%]">
         <ImageForm />
 

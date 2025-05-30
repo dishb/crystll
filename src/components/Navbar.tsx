@@ -40,16 +40,18 @@ export default function Navbar() {
 
         <div className="flex-1 flex justify-end items-center gap-4">
           <Button
+            asChild
             variant="outline"
             className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
           >
-            Sign up
+            <Link href="/signup">Sign up</Link>
           </Button>
           <Button
-            variant="ocean"
+            asChild
+            variant="outline"
             className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
           >
-            Login
+            <Link href="/login">Login</Link>
           </Button>
         </div>
       </div>
