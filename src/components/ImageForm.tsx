@@ -94,7 +94,7 @@ export default function ImageForm() {
 
   return (
     <div className="flex flex-col">
-      <Label className="text-2xl mb-4">Upload a receipt:</Label>
+      <Label className="font-normal text-2xl mb-4">Upload a receipt:</Label>
 
       <Input
         className="max-w-80 hover:cursor-pointer"
@@ -103,6 +103,7 @@ export default function ImageForm() {
       />
 
       <Button
+        variant="ocean"
         className="mt-4 hover:cursor-pointer"
         onClick={onClick}
         disabled={loading}
