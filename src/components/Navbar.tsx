@@ -11,8 +11,8 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="flex flex-col">
-      <div className="flex justify-between py-2 px-10 items-center">
+    <nav className="sticky z-99 top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm">
+      <div className={`flex justify-between h-16 px-10 items-center`}>
         <div className="flex-1 flex justify-start items-center gap-2">
           <Image
             src="/logo.svg"
@@ -29,7 +29,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-grape ${
+              className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
                 pathname === link.href ? "italic text-grape" : ""
               }`}
             >

@@ -7,12 +7,11 @@ import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
 import uploadReceipt from "@/lib/uploadReceipt";
 import validateFile from "@/lib/validateFile";
+import { Label } from "./ui/label";
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -37,20 +36,20 @@ export default function ImageForm() {
     setShowPopup(true);
   }
 
-  async function onClick() {
+  async function onClick(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+
     if (!file) {
       createPopup(
         "No file selected",
         "Please select a file to upload before clicking the upload button."
       );
-
       return;
     } else if (validateFile(file) === false) {
       createPopup(
         "Invalid file type",
         "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF)."
       );
-
       return;
     }
 
@@ -86,39 +85,48 @@ export default function ImageForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Upload a receipt</CardTitle>
-        <CardDescription>
-          Upload an image of a receipt. Must be a PNG, JPEG, GIF, WEBP, TIFF,
-          HEIC, or PDF.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Input
-          className="w-100 hover:cursor-pointer"
-          type="file"
-          onChange={onChange}
-        />
+    <div className="flex flex-col gap-6 -mt-16">
+      <Card>
+        <CardHeader>
+          <CardTitle>Upload a receipt</CardTitle>
+          <CardDescription>
+            Upload an image of a receipt. Must be a PNG, JPEG, GIF, WEBP, TIFF,
+            HEIC, or PDF.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-3">
+                <Label htmlFor="receipt">Receipt</Label>
+                <Input id="receipt" type="file" onChange={onChange} />
+              </div>
+              <Button
+                type="submit"
+                variant="outline"
+                className="mt-4 w-full hover:cursor-pointer"
+                onClick={onClick}
+                disabled={loading}
+              >
+                {loading ? (
+                  <LoaderCircle className="animate-spin" />
+                ) : (
+                  <Upload />
+                )}
+                {loading ? "Uploading..." : "Upload"}
+              </Button>
+            </div>
+          </form>
 
-        <Button
-          variant="outline"
-          className="mt-4 w-full hover:cursor-pointer"
-          onClick={onClick}
-          disabled={loading}
-        >
-          {loading ? <LoaderCircle className="animate-spin" /> : <Upload />}
-          {loading ? "Uploading..." : "Upload"}
-        </Button>
-
-        {showPopup && (
-          <Popup
-            title={popupTitle}
-            description={popupDescription}
-            onClose={() => setShowPopup(false)}
-          />
-        )}
-      </CardContent>
-    </Card>
+          {showPopup && (
+            <Popup
+              title={popupTitle}
+              description={popupDescription}
+              onClose={() => setShowPopup(false)}
+            />
+          )}
+        </CardContent>
+      </Card>
+    </div>
   );
 }

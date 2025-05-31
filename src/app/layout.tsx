@@ -23,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={ebGaramond.className}>
-        <Navbar />
-        <main className="flex flex-col min-h-screen">{children}</main>
+        <div className="min-h-screen">
+          <Navbar />
+          <main className="16">{children}</main>
+        </div>
         <Footer />
       </body>
     </html>
