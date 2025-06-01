@@ -3,7 +3,7 @@ import getReceipts from "@/lib/getReceipts";
 
 export async function GET() {
   try {
-    const receipts = getReceipts();
+    const receipts = await getReceipts();
     console.log(receipts);
     return NextResponse.json(receipts, { status: 200 });
   } catch (err: any) {

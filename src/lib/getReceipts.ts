@@ -11,7 +11,7 @@ export default async function getReceipts() {
 
   const db = client.db("receiptdb");
   const receiptColl = db.collection("receipts");
-  const receipts = receiptColl
+  const receipts = await receiptColl
     .find({ userId: new ObjectId(session.user.id) })
     .toArray();
 
