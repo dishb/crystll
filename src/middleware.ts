@@ -11,6 +11,6 @@ export default auth((req) => {
     ].includes(req.nextUrl.pathname)
   ) {
     const newUrl = new URL("/login", req.nextUrl.origin);
-    return Response.redirect(newUrl, 401);
+    return Response.redirect(newUrl)
   }
 });
