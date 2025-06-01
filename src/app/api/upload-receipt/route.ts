@@ -1,5 +1,4 @@
-import ReceiptModel from "@/models/ReceiptModel";
-import dbConnect from "@/lib/dbConnect";
+import client from "@/lib/db";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -44,10 +43,11 @@ export async function POST(req: Request) {
   const res = await mindeeRes.json();
   const ocrRes = res.document.inference.prediction;
 
-  await dbConnect();
+  const receiptDB = client.db("receiptdb");
+  const receiptColl = receiptDB.collection("receipts");
 
   try {
-    await ReceiptModel.create({
+    await receiptColl.insertOne({
       total: ocrRes.total_amount.value,
       tax: ocrRes.total_tax.value,
       date: ocrRes.date.value,
