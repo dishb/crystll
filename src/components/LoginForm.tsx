@@ -27,7 +27,7 @@ export default function LoginForm({
           <form
             action={async () => {
               "use server";
-              await signIn("github");
+              await signIn("github", { redirectTo: "/dashboard" });
             }}
           >
             <div className="flex flex-col">
