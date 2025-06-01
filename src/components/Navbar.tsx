@@ -44,13 +44,6 @@ export default function Navbar() {
             variant="outline"
             className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
           >
-            <Link href="/signup">Sign up</Link>
-          </Button>
-          <Button
-            asChild
-            variant="outline"
-            className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
-          >
             <Link href="/login">Login</Link>
           </Button>
         </div>

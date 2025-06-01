@@ -114,7 +114,7 @@ export default function Page() {
               Yep! Crystll was developed by Dishant Bhandula, a student at
               Amador Valley High School. Check out our{" "}
               <Link
-                className="text-ocean underline underline-offset-4  hover:no-underline"
+                className="text-ocean underline underline-offset-4 hover:no-underline"
                 href="/about"
               >
                 About

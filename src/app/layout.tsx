@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import NavbarWrapper from "@/components/NavbarWrapper";
 import { EB_Garamond } from "next/font/google";
 import "./globals.css";
+import FooterWrapper from "@/components/FooterWrapper";
 
 export const metadata: Metadata = {
   title: "crystll.",
@@ -24,10 +24,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={ebGaramond.className}>
         <div className="min-h-screen">
-          <Navbar />
+          <NavbarWrapper />
           <main className="16">{children}</main>
         </div>
-        <Footer />
+        <FooterWrapper />
       </body>
     </html>
   );
