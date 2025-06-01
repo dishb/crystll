@@ -9,7 +9,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { SiGithub } from "@icons-pack/react-simple-icons";
-import Link from "next/link";
 
 export default function LoginForm({
   className,
