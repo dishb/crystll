@@ -1,6 +1,4 @@
-import { Document } from "mongoose";
-
-export default interface Receipt extends Document {
+export default interface Receipt {
   merchant: string;
   total: number;
   tax: number;

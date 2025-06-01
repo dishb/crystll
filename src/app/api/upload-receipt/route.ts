@@ -1,5 +1,6 @@
 import client from "@/lib/db";
 import { NextResponse } from "next/server";
+import createReceipt from "@/lib/createReceipt";
 
 export async function POST(req: Request) {
   const formData = await req.formData();
@@ -47,13 +48,7 @@ export async function POST(req: Request) {
   const receiptColl = receiptDB.collection("receipts");
 
   try {
-    await receiptColl.insertOne({
-      total: ocrRes.total_amount.value,
-      tax: ocrRes.total_tax.value,
-      date: ocrRes.date.value,
-      merchant: ocrRes.supplier_name.value,
-      time: ocrRes.time.value,
-    });
+    createReceipt(ocrRes);
     return NextResponse.json("Success", { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
