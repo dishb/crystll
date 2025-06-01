@@ -87,7 +87,7 @@ export default function Page() {
       <hr className="w-full border-1 my-30" />
 
       <div className="w-full px-30 flex flex-col">
-        <h2 className="text-4xl font-medium text-ocean">FAQs</h2>
+        <h2 className="text-5xl font-medium text-ocean">FAQs</h2>
 
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
