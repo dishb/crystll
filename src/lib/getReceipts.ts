@@ -13,7 +13,7 @@ export default async function getReceipts() {
   const db = client.db("receiptdb");
   const receiptColl = db.collection("receipts");
 
-  const receipts = receiptColl.find({ userId: new ObjectId(userId) });
+  const receipts = receiptColl.find({ userId: new ObjectId(userId) }).toArray();
 
   return receipts;
 }
