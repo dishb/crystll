@@ -72,7 +72,7 @@ export default function Page() {
       <div className="flex flex-col justify-center px-30 max-w-200 gap-4">
         <h2 className="text-5xl">What is crystll?</h2>
         <h3 className="text-3xl text-blue">
-          It's a finance tracker for school clubs.
+          It&apos;s a finance tracker for school clubs.
         </h3>
         <p className="text-2xl">
           To use crystll, you simply upload an image of a receipt or invoice
@@ -80,7 +80,7 @@ export default function Page() {
           <br /> <br />
           We then extract important information, like the merchant and total
           cost, and finally log the receipt information. Users can then view
-          their club's entire purchase history.
+          their club&apos;s entire purchase history.
         </p>
       </div>
 
@@ -138,7 +138,7 @@ export default function Page() {
             <AccordionContent>
               Without proper finance management, clubs lack transparency and
               accountability. Crystll allows you to be clear and sure about
-              where your money is going, keeping your club's finances crystal
+              where your money is going, keeping your club&apos;s finances crystal
               clear.
             </AccordionContent>
           </AccordionItem>
@@ -151,7 +151,7 @@ export default function Page() {
               complex formulas to enable sorting, validating the entries,
               formatting, etc. All of these different things take a lot of
               research and time, neither of which are worth it. Google Sheets
-              also isn't scalable. Be simple and use crystll.
+              also isn&apos;t scalable. Be simple and use crystll.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-6">

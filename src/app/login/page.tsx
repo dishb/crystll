@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/LoginForm"
+import LoginForm from "@/components/LoginForm"
 import { Open_Sans } from "next/font/google";
 
 const openSans = Open_Sans({
