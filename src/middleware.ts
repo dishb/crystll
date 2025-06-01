@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
     request.cookies.get("__Secure-next-auth.session-token")?.value;
 
   if (!token) {
-    return NextResponse.redirect(new URL("/api/auth/signin", request.url));
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   return NextResponse.next();
