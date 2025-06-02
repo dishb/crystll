@@ -31,7 +31,11 @@ export default function LoginForm({
             }}
           >
             <div className="flex flex-col">
-              <Button variant="outline" type="submit" className="w-full">
+              <Button
+                variant="outline"
+                type="submit"
+                className="w-full hover:cursor-pointer"
+              >
                 <SiGithub />
                 Sign in with GitHub
               </Button>

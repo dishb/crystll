@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import navItems from "@/data/navItems";
 import { Button } from "@/components/ui/button";
+import { signOut } from "next-auth/react";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -25,27 +26,58 @@ export default function Navbar() {
         </div>
 
         <div className="flex-2 flex justify-center items-center gap-4">
-          {navItems.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
-                pathname === link.href ? "italic text-grape" : ""
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {["/upload", "/dashboard"].includes(pathname) ? (
+            <>
+              <Link
+                href="/upload"
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === "/upload" ? "italic text-grape" : ""
+                }`}
+              >
+                Upload
+              </Link>
+              <Link
+                href="/dashboard"
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === "/dashboard" ? "italic text-grape" : ""
+                }`}
+              >
+                Dashboard
+              </Link>
+            </>
+          ) : (
+            navItems.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === link.href ? "italic text-grape" : ""
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))
+          )}
         </div>
 
         <div className="flex-1 flex justify-end items-center gap-4">
-          <Button
-            asChild
-            variant="outline"
-            className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
-          >
-            <Link href="/login">Login</Link>
-          </Button>
+          {["/upload", "/dashboard"].includes(pathname) ? (
+            <Button
+              variant="outline"
+              className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
+              onClick={() => signOut({ callbackUrl: "/", redirect: true })}
+            >
+              Log out
+            </Button>
+          ) : (
+            <Button
+              asChild
+              variant="outline"
+              className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
+            >
+              <Link href="/login">Login</Link>
+            </Button>
+          )}
         </div>
       </div>
       <Separator />
