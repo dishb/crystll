@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
-import uploadReceipt from "@/lib/uploadReceipt";
 import validateFile from "@/lib/validateFile";
 import { Label } from "./ui/label";
 import {
@@ -15,13 +14,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import uploadReceipt from "@/app/actions/uploadReceipt";
 
 export default function ImageForm() {
   const [file, setFile] = useState<File | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupTitle, setPopupTitle] = useState("");
   const [popupDescription, setPopupDescription] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, startTransition] = useTransition();
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -36,9 +36,8 @@ export default function ImageForm() {
     setShowPopup(true);
   }
 
-  async function onClick(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-
+  async function onSubmit(formData: FormData) {
+    const file = formData.get("file") as File;
     if (!file) {
       createPopup(
         "No file selected",
@@ -53,35 +52,15 @@ export default function ImageForm() {
       return;
     }
 
-    setLoading(true);
-    const res = await uploadReceipt(file);
-
-    if (!res.ok) {
-      if (res.status === 404) {
-        createPopup(
-          "404: Not Found",
-          "The requested resource was not found. Please report this issue to the developers."
-        );
-      } else if (res.status === 500) {
+    startTransition(async () => {
+      const res = await uploadReceipt(formData);
+      if (!res.ok) {
         createPopup(
           "500: Internal Server Error",
-          "An error occurred on the server. Please report this issue to the developers."
-        );
-      } else if (res.status === 429) {
-        createPopup(
-          "429: Rate Limit Exceeded",
-          "You have exceeded the API rate limit. Please try again later."
-        );
-      } else {
-        createPopup(
-          "Error while processing file",
-          "An error occurred while processing your request. Please report this issue to the developers."
+          "Please report this issue to the developers."
         );
       }
-    }
-
-    setLoading(false);
-    return;
+    });
   }
 
   return (
@@ -95,17 +74,25 @@ export default function ImageForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
+          <form
+            action={async (formData) => {
+              await onSubmit(formData);
+            }}
+          >
             <div className="flex flex-col gap-6">
               <div className="grid gap-3">
                 <Label htmlFor="receipt">Receipt</Label>
-                <Input id="receipt" type="file" onChange={onChange} />
+                <Input
+                  id="receipt"
+                  name="file"
+                  type="file"
+                  onChange={onChange}
+                />
               </div>
               <Button
                 type="submit"
                 variant="outline"
                 className="mt-4 w-full hover:cursor-pointer"
-                onClick={onClick}
                 disabled={loading}
               >
                 {loading ? (
