@@ -22,6 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="apple-mobile-web-app-title" content="crystll" />
+      </head>
       <body className={ebGaramond.className}>
         <div className="min-h-screen">
           <NavbarWrapper />
