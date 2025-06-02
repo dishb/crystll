@@ -15,8 +15,5 @@ export default async function getReceipts() {
     .find({ userId: new ObjectId(session.user.id) })
     .toArray();
 
-  console.log(session.user.id);
-  console.log(receipts);
-
   return receipts;
 }
