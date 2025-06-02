@@ -7,8 +7,12 @@ export default {
     signIn: "/login",
   },
   callbacks: {
-    authorized: async ({ auth }) => {
-      return !!auth;
+    authorized: async ({ auth }) => !!auth,
+    async session({ session, token }) {
+      if (session.user && token && token.sub) {
+        session.user.id = token.sub;
+      }
+      return session;
     },
   },
 } satisfies NextAuthConfig;
