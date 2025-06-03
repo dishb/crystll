@@ -3,6 +3,8 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import { EB_Garamond } from "next/font/google";
 import "./globals.css";
 import FooterWrapper from "@/components/FooterWrapper";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "crystll.",
@@ -31,6 +33,8 @@ export default function RootLayout({
           <main className="16">{children}</main>
         </div>
         <FooterWrapper />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
