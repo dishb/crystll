@@ -12,14 +12,6 @@ export default {
     signIn: "/login",
   },
   callbacks: {
-    async signIn({ profile }) {
-      const username =
-        typeof profile?.login === "string" ? profile.login : undefined;
-      if (username && WHITELIST.includes(username)) {
-        return true;
-      }
-      return false;
-    },
     authorized: async ({ auth }) => !!auth,
     async session({ session, token }) {
       if (session.user && token && token.sub) {
