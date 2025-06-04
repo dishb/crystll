@@ -1,5 +1,10 @@
 import LoginForm from "@/components/LoginForm"
 import { Open_Sans } from "next/font/google";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "crystll. | login",
+};
 
 const openSans = Open_Sans({
   subsets: ["latin"],

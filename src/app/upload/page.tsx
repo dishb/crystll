@@ -1,6 +1,11 @@
 import ImageForm from "@/components/ImageForm";
 import { Open_Sans } from "next/font/google";
 import { auth } from "@/auth";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "crystll. | upload",
+};
 
 const openSans = Open_Sans({
   subsets: ["latin"],

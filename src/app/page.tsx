@@ -7,6 +7,11 @@ import {
 } from "@/components/ui/accordion";
 import { Upload, MousePointerClick, History } from "lucide-react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "crystll. | home",
+};
 
 export default function Page() {
   return (
@@ -14,18 +19,18 @@ export default function Page() {
       <div className="h-screen flex justify-center items-center w-350">
         <div className="w-1/2 flex flex-col justify-center items-start">
           <div className="flex flex-col w-full h-full">
-            <h2 className="text-4xl">
+            <p className="text-4xl">
               Upload. Click.{" "}
               <span className="font-medium text-grape">Done.</span>
-            </h2>
+            </p>
             <h1 className="text-9xl mt-4">
               Yes, it&apos;s <span className="italic text-ocean">that</span>{" "}
               easy.
             </h1>
           </div>
-          <h3 className="text-3xl mt-20">
+          <h2 className="text-3xl mt-20">
             Take the first and final step towards better finance management.
-          </h3>
+          </h2>
         </div>
 
         <Image
@@ -50,44 +55,41 @@ export default function Page() {
         </p>
       </div>
 
-      <div className="w-full flex justify-around items-center px-30 mt-60">
-        <div className="flex flex-col justify-center items-center">
-          <Upload size="5.5rem" className="text-grape" />
-          <h3 className="mt-5 text-5xl text-grape">1. Upload a receipt</h3>
-        </div>
+      <div className="flex flex-col items-center w-full px-30 mt-30">
+        <p className="text-6xl italic">Simply...</p>
 
-        <div className="flex flex-col justify-center items-center">
-          <MousePointerClick size="5.5rem" className="text-ocean" />
-          <h3 className="mt-5 text-5xl text-ocean">2. Click to submit</h3>
-        </div>
+        <div className="w-full flex justify-around items-center mt-15">
+          <div className="flex flex-col justify-center items-center">
+            <Upload size="5.5rem" className="text-grape" />
+            <h3 className="mt-5 text-5xl text-grape">1. Upload a receipt</h3>
+          </div>
 
-        <div className="flex flex-col justify-center items-center">
-          <History size="5.5rem" className="text-blue" />
-          <h3 className="mt-5 text-5xl text-blue">3. View purchase log</h3>
+          <div className="flex flex-col justify-center items-center">
+            <MousePointerClick size="5.5rem" className="text-ocean" />
+            <h3 className="mt-5 text-5xl text-ocean">2. Click to submit</h3>
+          </div>
+
+          <div className="flex flex-col justify-center items-center">
+            <History size="5.5rem" className="text-blue" />
+            <h3 className="mt-5 text-5xl text-blue">3. View purchase log</h3>
+          </div>
         </div>
       </div>
 
       <hr className="w-full border-1 my-30" />
 
-      <div className="flex flex-col justify-center px-30 max-w-200 gap-4">
-        <h2 className="text-5xl">What is crystll?</h2>
-        <h3 className="text-3xl text-blue">
-          It&apos;s a finance tracker for school clubs.
-        </h3>
-        <p className="text-2xl">
-          To use crystll, you simply upload an image of a receipt or invoice
-          that contains details of your purchase(s).
-          <br /> <br />
-          We then extract important information, like the merchant and total
-          cost, and finally log the receipt information. Users can then view
-          their club&apos;s entire purchase history.
-        </p>
-      </div>
+      <h2 className="text-6xl">
+        <Link
+          href="/login"
+          className="text-blue underline underline-offset-10 hover:no-underline decoration-4"
+        >
+          Login
+        </Link>{" "}
+        and start using crystll today.
+      </h2>
 
-      <hr className="w-full border-1 my-30" />
-
-      <div className="w-full px-30 flex flex-col">
-        <h2 className="text-5xl font-medium text-ocean">FAQs</h2>
+      <div className="w-full px-30 flex flex-col mt-30">
+        <h2 className="text-5xl font-medium text-ocean mb-4">FAQs</h2>
 
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
@@ -97,7 +99,7 @@ export default function Page() {
               High School! If you would like to support the developers and
               project, feel free to{" "}
               <Link
-                className="text-ocean underline underline-offset-4  hover:no-underline"
+                className="text-ocean underline underline-offset-4 hover:no-underline"
                 href="/contact"
               >
                 contact
@@ -138,8 +140,8 @@ export default function Page() {
             <AccordionContent>
               Without proper finance management, clubs lack transparency and
               accountability. Crystll allows you to be clear and sure about
-              where your money is going, keeping your club&apos;s finances crystal
-              clear.
+              where your money is going, keeping your club&apos;s finances
+              crystal clear.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
