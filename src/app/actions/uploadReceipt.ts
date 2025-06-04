@@ -3,7 +3,6 @@
 import { auth } from "@/auth";
 import client from "@/lib/db";
 import { ObjectId } from "mongodb";
-import { revalidatePath } from "next/cache";
 
 export default async function uploadReceipt(formData: FormData) {
   const file = formData.get("file") as File;

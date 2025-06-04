@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import NavbarWrapper from "@/components/NavbarWrapper";
 import { EB_Garamond } from "next/font/google";
 import "./globals.css";
 import FooterWrapper from "@/components/FooterWrapper";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import Navbar from "@/components/Navbar";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   description: "Be crystal clear with your club's finances.",
@@ -27,10 +28,12 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="crystll" />
       </head>
       <body className={ebGaramond.className}>
-        <div className="min-h-screen">
-          <NavbarWrapper />
-          <main className="16">{children}</main>
-        </div>
+        <SessionProvider>
+          <div className="min-h-screen">
+            <Navbar />
+            <main className="16">{children}</main>
+          </div>
+        </SessionProvider>
         <FooterWrapper />
         <SpeedInsights />
         <Analytics />

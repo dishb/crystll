@@ -1,13 +1,8 @@
-import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google"
 import type { NextAuthConfig } from "next-auth";
 
-const WHITELIST = (process.env.AUTH_WHITELIST ?? "")
-  .split(";")
-  .map((s) => s.trim())
-  .filter(Boolean);
-
 export default {
-  providers: [GitHub],
+  providers: [Google],
   pages: {
     signIn: "/login",
   },

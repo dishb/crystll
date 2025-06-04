@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { SiGithub } from "@icons-pack/react-simple-icons";
+import { SiGoogle } from "@icons-pack/react-simple-icons";
 
 export default function LoginForm({
   className,
@@ -27,7 +27,7 @@ export default function LoginForm({
           <form
             action={async () => {
               "use server";
-              await signIn("github", { redirectTo: "/dashboard" });
+              await signIn("google", { redirectTo: "/dashboard" });
             }}
           >
             <div className="flex flex-col">
@@ -36,8 +36,8 @@ export default function LoginForm({
                 type="submit"
                 className="w-full hover:cursor-pointer"
               >
-                <SiGithub />
-                Sign in with GitHub
+                <SiGoogle />
+                Sign in with Google
               </Button>
             </div>
           </form>

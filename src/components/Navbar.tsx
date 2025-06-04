@@ -1,18 +1,40 @@
 "use client";
 
 import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "./ui/separator";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import navItems from "@/data/navItems";
-import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import { Button } from "./ui/button";
+import { useSession, signOut } from "next-auth/react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { usePathname } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import validatePathname from "@/lib/validatePathname";
+import { Open_Sans } from "next/font/google";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const userName = session && session.user ? session.user.name : undefined;
+  const userImage = session && session.user ? session.user.image : undefined;
+  console.log(session?.user?.image);
+
+  if (!validatePathname(pathname)) return null;
 
   return (
-    <nav className="sticky z-99 top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm">
+    <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm">
       <div className={`flex justify-between h-16 px-10 items-center`}>
         <div className="flex-1 flex justify-start items-center gap-2">
           <Image
@@ -62,13 +84,33 @@ export default function Navbar() {
 
         <div className="flex-1 flex justify-end items-center gap-4">
           {["/upload", "/dashboard"].includes(pathname) ? (
-            <Button
-              variant="outline"
-              className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
-              onClick={() => signOut({ callbackUrl: "/", redirect: true })}
-            >
-              Log out
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar className="border shadow-xs w-10 h-auto">
+                  <AvatarImage src={userImage ?? undefined} />
+                  <AvatarFallback>
+                    {userName
+                      ? userName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .join("")
+                      : "?"}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel className={openSans.className}>
+                  My Account
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className={openSans.className}
+                  onClick={() => signOut()}
+                >
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Button
               asChild
