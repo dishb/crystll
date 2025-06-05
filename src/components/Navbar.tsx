@@ -86,7 +86,7 @@ export default function Navbar() {
           {["/upload", "/dashboard"].includes(pathname) ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Avatar className="border shadow-xs w-10 h-auto">
+                <Avatar className="border shadow-xs w-10 h-auto hover:cursor-pointer">
                   <AvatarImage src={userImage ?? undefined} />
                   <AvatarFallback>
                     {userName
