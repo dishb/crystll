@@ -104,7 +104,7 @@ export default function Navbar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className={openSans.className}
+                  className={`${openSans.className} hover:cursor-pointer`}
                   onClick={() => signOut()}
                 >
                   Log out
