@@ -26,7 +26,7 @@ const openSans = Open_Sans({
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const userName = session && session.user ? session.user.name : undefined;
   const userImage = session && session.user ? session.user.image : undefined;
   console.log(session?.user?.image);
@@ -50,6 +50,14 @@ export default function Navbar() {
         <div className="flex-2 flex justify-center items-center gap-4">
           {["/upload", "/dashboard"].includes(pathname) ? (
             <>
+              <Link
+                href="/"
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === "/home" ? "italic text-grape" : ""
+                }`}
+              >
+                Home
+              </Link>
               <Link
                 href="/upload"
                 className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
@@ -86,7 +94,7 @@ export default function Navbar() {
           {["/upload", "/dashboard"].includes(pathname) ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Avatar className="border shadow-xs w-10 h-auto hover:cursor-pointer">
+                <Avatar className="border shadow-xs w-10 h-10 hover:cursor-pointer">
                   <AvatarImage src={userImage ?? undefined} />
                   <AvatarFallback>
                     {userName
@@ -117,7 +125,11 @@ export default function Navbar() {
               variant="outline"
               className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
             >
-              <Link href="/login">Login</Link>
+              {status !== "authenticated" ? (
+                <Link href="/login">Login</Link>
+              ) : (
+                <Link href="/dashboard">Dashboard</Link>
+              )}
             </Button>
           )}
         </div>
