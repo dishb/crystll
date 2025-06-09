@@ -1,34 +1,53 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Input } from "./ui/input";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
 import validateFile from "@/lib/validateFile";
-import { Label } from "./ui/label";
+import uploadReceipt from "@/app/actions/uploadReceipt";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "./ui/input";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
+  CardDescription,
+  CardContent,
 } from "@/components/ui/card";
-import uploadReceipt from "@/app/actions/uploadReceipt";
+
+const formSchema = z.object({
+  file: z
+    .any()
+    .refine((file) => file instanceof File && file.size > 0, {
+      message: "Please select a file to upload.",
+    })
+    .refine((file) => validateFile(file), {
+      message:
+        "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF).",
+    }),
+});
 
 export default function ImageForm() {
-  const [file, setFile] = useState<File | null>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [popupTitle, setPopupTitle] = useState("");
   const [popupDescription, setPopupDescription] = useState("");
   const [loading, startTransition] = useTransition();
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setFile(file);
-    }
-  };
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: { file: undefined },
+  });
 
   function createPopup(title: string, description: string) {
     setPopupTitle(title);
@@ -36,27 +55,22 @@ export default function ImageForm() {
     setShowPopup(true);
   }
 
-  async function onSubmit(formData: FormData) {
-    const file = formData.get("file") as File;
-    if (!file) {
+  async function onSubmit(values: { file?: File }) {
+    if (!values.file) {
       createPopup(
         "No file selected",
-        "Please select a file to upload before clicking the upload button."
-      );
-      return;
-    } else if (validateFile(file) === false) {
-      createPopup(
-        "Invalid file type",
-        "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF)."
+        "Please select a file to upload before submitting."
       );
       return;
     }
+    const formData = new FormData();
+    formData.append("file", values.file);
 
     startTransition(async () => {
       const res = await uploadReceipt(formData);
       if (!res.ok) {
         createPopup(
-          "500: Internal Server Error",
+          res.error || "500: Internal Server Error",
           "Please report this issue to the developers."
         );
       }
@@ -69,26 +83,37 @@ export default function ImageForm() {
         <CardHeader>
           <CardTitle>Upload a receipt</CardTitle>
           <CardDescription>
-            Upload an image of a receipt. Must be a PNG, JPEG, GIF, WEBP, TIFF,
-            HEIC, or PDF.
+            Upload an image of a receipt. Must be a PNG, JPEG, GIF, WEBP, TIFF, HEIC, or PDF.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form
-            action={async (formData) => {
-              await onSubmit(formData);
-            }}
-          >
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-3">
-                <Label htmlFor="receipt">Receipt</Label>
-                <Input
-                  id="receipt"
-                  name="file"
-                  type="file"
-                  onChange={onChange}
-                />
-              </div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-6"
+            >
+              <FormField
+                control={form.control}
+                name="file"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel htmlFor="receipt">Receipt</FormLabel>
+                    <FormControl>
+                      <Input
+                        id="receipt"
+                        type="file"
+                        accept="image/*,application/pdf"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          field.onChange(file);
+                        }}
+                        disabled={loading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Button
                 type="submit"
                 variant="outline"
@@ -102,9 +127,8 @@ export default function ImageForm() {
                 )}
                 {loading ? "Uploading..." : "Upload"}
               </Button>
-            </div>
-          </form>
-
+            </form>
+          </Form>
           {showPopup && (
             <Popup
               title={popupTitle}

@@ -18,21 +18,22 @@ import { Button } from "@/components/ui/button";
 import columns from "@/data/column";
 import type Receipt from "@/types/receipt";
 import { useState, useEffect } from "react";
-import fetchReceipts from "@/lib/fetchReceipts";
+import { RefreshCcw } from "lucide-react";
 
 export default function DataTable() {
   const [data, setData] = useState<Receipt[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleFetchReceipts = async () => {
+    setLoading(true);
+    const res = await fetch("/api/get-receipts", { method: "GET" });
+    const receipts = await res.json();
+    setData(receipts);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    fetchReceipts().then((receipts) => {
-      setData(receipts);
-    });
-
-    setInterval(() => {
-      fetchReceipts().then((receipts) => {
-        setData(receipts);
-      });
-    }, 1000);
+    handleFetchReceipts();
   }, []);
 
   const table = useReactTable({
@@ -44,6 +45,17 @@ export default function DataTable() {
 
   return (
     <div>
+      <div className="flex justify-end mb-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleFetchReceipts}
+          disabled={loading}
+        >
+          {loading ? <RefreshCcw className="animate-spin" /> : <RefreshCcw />}
+          {loading ? "Refreshing..." : "Refresh"}
+        </Button>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

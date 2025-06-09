@@ -9,6 +9,10 @@ export default function validateFile(file: File): boolean {
     "application/pdf",
   ];
 
+  if (!file) {
+    return false;
+  }
+
   if (!validTypes.includes(file.type)) {
     return false;
   }
