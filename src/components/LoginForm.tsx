@@ -10,12 +10,9 @@ import {
 } from "@/components/ui/card";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 
-export default function LoginForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export default function LoginForm() {
   return (
-    <div className={cn("flex flex-col gap-6 -mt-16", className)} {...props}>
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle>Login to your account</CardTitle>
@@ -32,7 +29,6 @@ export default function LoginForm({
           >
             <div className="flex flex-col">
               <Button
-                variant="outline"
                 type="submit"
                 className="w-full hover:cursor-pointer"
               >

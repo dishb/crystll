@@ -34,8 +34,8 @@ export default function Navbar() {
   if (!validatePathname(pathname)) return null;
 
   return (
-    <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm">
-      <div className={`flex justify-between h-16 px-10 items-center`}>
+    <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm h-16">
+      <div className={`flex-1 flex justify-between px-10 items-center`}>
         <div className="flex-1 flex justify-start items-center gap-2">
           <Image
             src="/logo.svg"

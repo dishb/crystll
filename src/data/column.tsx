@@ -1,10 +1,21 @@
 import { type ColumnDef } from "@tanstack/react-table";
 import type Receipt from "@/types/receipt";
+import { Badge } from "@/components/ui/badge";
 
 const columns: ColumnDef<Receipt>[] = [
   {
     accessorKey: "merchant",
     header: "Merchant",
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => {
+      const formatted: string = row.getValue("type");
+      const capitalized =
+        formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      return <Badge>{capitalized}</Badge>;
+    },
   },
   {
     accessorKey: "total",

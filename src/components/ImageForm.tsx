@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
 import validateFile from "@/lib/validateFile";
-import uploadReceipt from "@/app/actions/uploadReceipt";
+import uploadFile from "@/app/actions/uploadFile";
 import {
   Form,
   FormField,
@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form";
+} from "./ui/form";
 import { Input } from "./ui/input";
 import {
   Card,
@@ -24,7 +24,8 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/components/ui/card";
+} from "./ui/card";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const formSchema = z.object({
   file: z
@@ -36,6 +37,9 @@ const formSchema = z.object({
       message:
         "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF).",
     }),
+  type: z.enum(["receipt", "invoice"], {
+    required_error: "You need to select an image type.",
+  }),
 });
 
 export default function ImageForm() {
@@ -46,7 +50,9 @@ export default function ImageForm() {
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { file: undefined },
+    defaultValues: {
+      type: "receipt",
+    },
   });
 
   function createPopup(title: string, description: string) {
@@ -55,7 +61,7 @@ export default function ImageForm() {
     setShowPopup(true);
   }
 
-  async function onSubmit(values: { file?: File }) {
+  async function onSubmit(values: { file?: File; type: string }) {
     if (!values.file) {
       createPopup(
         "No file selected",
@@ -65,25 +71,27 @@ export default function ImageForm() {
     }
     const formData = new FormData();
     formData.append("file", values.file);
+    formData.append("type", values.type);
 
     startTransition(async () => {
-      const res = await uploadReceipt(formData);
+      const res = await uploadFile(formData);
       if (!res.ok) {
         createPopup(
-          res.error || "500: Internal Server Error",
-          "Please report this issue to the developers."
+          "500: Internal Server Error",
+          res.error || "An error occurred uploading your image."
         );
       }
     });
   }
 
   return (
-    <div className="flex flex-col gap-6 -mt-16">
+    <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Upload a receipt</CardTitle>
+          <CardTitle>Log new purchase</CardTitle>
           <CardDescription>
-            Upload an image of a receipt. Must be a PNG, JPEG, GIF, WEBP, TIFF, HEIC, or PDF.
+            Upload an image of a receipt or invoice. Must be a PNG, JPEG, GIF,
+            WEBP, TIFF, HEIC, or PDF.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -94,10 +102,39 @@ export default function ImageForm() {
             >
               <FormField
                 control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel htmlFor="type">Type</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col"
+                      >
+                        <FormItem className="flex items-center gap-3">
+                          <FormControl>
+                            <RadioGroupItem value="receipt" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Receipt</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center gap-3">
+                          <FormControl>
+                            <RadioGroupItem value="invoice" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Invoice</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                  </FormItem>
+                )}
+              ></FormField>
+              <FormField
+                control={form.control}
                 name="file"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="receipt">Receipt</FormLabel>
+                  <FormItem className="space-y-3">
+                    <FormLabel htmlFor="receipt">Image</FormLabel>
                     <FormControl>
                       <Input
                         id="receipt"
@@ -116,7 +153,6 @@ export default function ImageForm() {
               />
               <Button
                 type="submit"
-                variant="outline"
                 className="mt-4 w-full hover:cursor-pointer"
                 disabled={loading}
               >

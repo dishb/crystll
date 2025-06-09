@@ -44,16 +44,16 @@ export default function DataTable() {
   });
 
   return (
-    <div>
+    <>
       <div className="flex justify-end mb-2">
         <Button
           variant="outline"
           size="sm"
           onClick={handleFetchReceipts}
           disabled={loading}
+          className="hover:cursor-pointer"
         >
           {loading ? <RefreshCcw className="animate-spin" /> : <RefreshCcw />}
-          {loading ? "Refreshing..." : "Refresh"}
         </Button>
       </div>
       <div className="rounded-md border">
@@ -124,6 +124,6 @@ export default function DataTable() {
           Next
         </Button>
       </div>
-    </div>
+    </>
   );
 }

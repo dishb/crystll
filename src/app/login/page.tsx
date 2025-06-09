@@ -13,7 +13,7 @@ const openSans = Open_Sans({
 
 export default function Page() {
   return (
-    <div className={`h-screen flex w-full items-center justify-center p-6 md:p-10 ${openSans.className}`}>
+    <div className={`h-screen -mt-16 flex w-full items-center justify-center p-6 ${openSans.className}`}>
       <div className="w-full max-w-sm">
         <LoginForm />
       </div>

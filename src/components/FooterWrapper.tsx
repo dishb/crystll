@@ -7,9 +7,9 @@ import validatePathname from "@/lib/validatePathname";
 export default function FooterWrapper() {
   const pathname = usePathname();
   if (
-    !validatePathname(pathname) &&
-    pathname !== "/dashboard" &&
-    pathname !== "/upload"
+    !validatePathname(pathname) ||
+    pathname === "/dashboard" ||
+    pathname === "/upload"
   )
     return null;
   return <Footer />;
