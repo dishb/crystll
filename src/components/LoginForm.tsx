@@ -15,9 +15,9 @@ export default function LoginForm() {
     <div className="flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Login</CardTitle>
           <CardDescription>
-            Use one of the providers below to sign in.
+            Use your club's official email to sign in with Google.
           </CardDescription>
         </CardHeader>
         <CardContent>

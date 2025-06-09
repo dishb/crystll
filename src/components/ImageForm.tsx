@@ -36,10 +36,11 @@ const formSchema = z.object({
     .refine((file) => validateFile(file), {
       message:
         "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF).",
+    })
+    .refine((file) => file.size < 10000000, {
+      message: "File must be less than 10 MB.",
     }),
-  type: z.enum(["receipt", "invoice"], {
-    required_error: "You need to select an image type.",
-  }),
+  type: z.enum(["receipt", "invoice"]),
 });
 
 export default function ImageForm() {
@@ -85,95 +86,89 @@ export default function ImageForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Log new purchase</CardTitle>
-          <CardDescription>
-            Upload an image of a receipt or invoice. Must be a PNG, JPEG, GIF,
-            WEBP, TIFF, HEIC, or PDF.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-6"
-            >
-              <FormField
-                control={form.control}
-                name="type"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel htmlFor="type">Type</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        className="flex flex-col"
-                      >
-                        <FormItem className="flex items-center gap-3">
-                          <FormControl>
-                            <RadioGroupItem value="receipt" />
-                          </FormControl>
-                          <FormLabel className="font-normal">Receipt</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center gap-3">
-                          <FormControl>
-                            <RadioGroupItem value="invoice" />
-                          </FormControl>
-                          <FormLabel className="font-normal">Invoice</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                  </FormItem>
-                )}
-              ></FormField>
-              <FormField
-                control={form.control}
-                name="file"
-                render={({ field }) => (
-                  <FormItem className="space-y-3">
-                    <FormLabel htmlFor="receipt">Image</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="receipt"
-                        type="file"
-                        accept="image/*,application/pdf"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          field.onChange(file);
-                        }}
-                        disabled={loading}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="mt-4 w-full hover:cursor-pointer"
-                disabled={loading}
-              >
-                {loading ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  <Upload />
-                )}
-                {loading ? "Uploading..." : "Upload"}
-              </Button>
-            </form>
-          </Form>
-          {showPopup && (
-            <Popup
-              title={popupTitle}
-              description={popupDescription}
-              onClose={() => setShowPopup(false)}
+    <Card>
+      <CardHeader>
+        <CardTitle>Log new purchase</CardTitle>
+        <CardDescription>
+          Upload an image of a receipt or invoice. Must be a PNG, JPEG, GIF,
+          WEBP, TIFF, HEIC, or PDF.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-6"
+          >
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem className="space-y-1">
+                  <FormLabel htmlFor="type">Type</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col"
+                    >
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="receipt" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Receipt</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem value="invoice" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Invoice</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                </FormItem>
+              )}
+            ></FormField>
+            <FormField
+              control={form.control}
+              name="file"
+              render={({ field }) => (
+                <FormItem className="space-y-1">
+                  <FormLabel htmlFor="receipt">Image</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="receipt"
+                      type="file"
+                      accept="image/*,application/pdf"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        field.onChange(file);
+                      }}
+                      disabled={loading}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          )}
-        </CardContent>
-      </Card>
-    </div>
+            <Button
+              type="submit"
+              className="w-full hover:cursor-pointer"
+              disabled={loading}
+            >
+              {loading ? <LoaderCircle className="animate-spin" /> : <Upload />}
+              {loading ? "Uploading..." : "Upload"}
+            </Button>
+          </form>
+        </Form>
+        {showPopup && (
+          <Popup
+            title={popupTitle}
+            description={popupDescription}
+            onClose={() => setShowPopup(false)}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 }
