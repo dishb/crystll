@@ -1,11 +1,11 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import type Receipt from "@/types/receipt";
+import type Purchase from "@/types/purchase";
 import { Badge } from "@/components/ui/badge";
 
-const columns: ColumnDef<Receipt>[] = [
+const columns: ColumnDef<Purchase>[] = [
   {
-    accessorKey: "merchant",
-    header: "Merchant",
+    accessorKey: "title",
+    header: "Title",
   },
   {
     accessorKey: "type",
@@ -14,8 +14,12 @@ const columns: ColumnDef<Receipt>[] = [
       const formatted: string = row.getValue("type");
       const capitalized =
         formatted.charAt(0).toUpperCase() + formatted.slice(1);
-      return <Badge>{capitalized}</Badge>;
+      return <Badge variant="outline">{capitalized}</Badge>;
     },
+  },
+  {
+    accessorKey: "merchant",
+    header: "Merchant",
   },
   {
     accessorKey: "total",
@@ -48,6 +52,10 @@ const columns: ColumnDef<Receipt>[] = [
     header: "Time",
     cell: ({ row }) => {
       const time = row.getValue("time");
+      if (time === "") {
+        return <>N/A</>;
+      }
+
       let formattedTime = "";
 
       if (typeof time === "string" && /^\d{2}:\d{2}$/.test(time)) {
@@ -58,7 +66,7 @@ const columns: ColumnDef<Receipt>[] = [
         formattedTime = `${hour}:${minuteStr} ${ampm}`;
       }
 
-      return <div>{formattedTime}</div>;
+      return <>{formattedTime}</>;
     },
   },
   {
@@ -72,7 +80,7 @@ const columns: ColumnDef<Receipt>[] = [
         day: "2-digit",
       }).format(date);
 
-      return <div>{formattedDate}</div>;
+      return <>{formattedDate}</>;
     },
   },
 ];

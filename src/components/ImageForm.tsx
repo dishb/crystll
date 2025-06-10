@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
-import validateFile from "@/lib/validateFile";
 import uploadFile from "@/app/actions/uploadFile";
 import {
   Form,
@@ -28,16 +27,13 @@ import {
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 const formSchema = z.object({
+  title: z.string().max(40, "Title cannot be more than 40 characters long."),
   file: z
     .any()
     .refine((file) => file instanceof File && file.size > 0, {
       message: "Please select a file to upload.",
     })
-    .refine((file) => validateFile(file), {
-      message:
-        "Please upload a valid image file (PNG, JPEG, WEBP, TIFF, HEIC, or PDF).",
-    })
-    .refine((file) => file.size < 10000000, {
+    .refine((file) => file instanceof File && file.size < 10000000, {
       message: "File must be less than 10 MB.",
     }),
   type: z.enum(["receipt", "invoice"]),
@@ -52,8 +48,10 @@ export default function ImageForm() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      title: "",
       type: "receipt",
     },
+    mode: "onChange",
   });
 
   function createPopup(title: string, description: string) {
@@ -62,17 +60,15 @@ export default function ImageForm() {
     setShowPopup(true);
   }
 
-  async function onSubmit(values: { file?: File; type: string }) {
-    if (!values.file) {
-      createPopup(
-        "No file selected",
-        "Please select a file to upload before submitting."
-      );
-      return;
-    }
+  async function onSubmit(values: {
+    file?: File;
+    type: string;
+    title: string;
+  }) {
     const formData = new FormData();
-    formData.append("file", values.file);
+    formData.append("file", values.file ?? "");
     formData.append("type", values.type);
+    formData.append("title", values.title);
 
     startTransition(async () => {
       const res = await uploadFile(formData);
@@ -102,33 +98,23 @@ export default function ImageForm() {
           >
             <FormField
               control={form.control}
-              name="type"
+              name="title"
               render={({ field }) => (
                 <FormItem className="space-y-1">
-                  <FormLabel htmlFor="type">Type</FormLabel>
+                  <FormLabel htmlFor="title">Title</FormLabel>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col"
-                    >
-                      <FormItem className="flex items-center gap-3">
-                        <FormControl>
-                          <RadioGroupItem value="receipt" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Receipt</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center gap-3">
-                        <FormControl>
-                          <RadioGroupItem value="invoice" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Invoice</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
+                    <Input
+                      id="title"
+                      type="text"
+                      disabled={loading}
+                      placeholder="Title of the purchase"
+                      {...field}
+                    />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
-            ></FormField>
+            />
             <FormField
               control={form.control}
               name="file"
@@ -139,15 +125,52 @@ export default function ImageForm() {
                     <Input
                       id="receipt"
                       type="file"
-                      accept="image/*,application/pdf"
+                      accept="image/png,image/jpeg,image/tiff,image/gif,image/heic,image/webp,application/pdf"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         field.onChange(file);
                       }}
                       disabled={loading}
+                      className="hover:cursor-pointer"
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem className="space-y-1">
+                  <FormLabel htmlFor="type">Type</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col"
+                      disabled={loading}
+                    >
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="receipt"
+                            className="hover:cursor-pointer"
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">Receipt</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center gap-3">
+                        <FormControl>
+                          <RadioGroupItem
+                            value="invoice"
+                            className="hover:cursor-pointer"
+                          />
+                        </FormControl>
+                        <FormLabel className="font-normal">Invoice</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
                 </FormItem>
               )}
             />
@@ -155,6 +178,7 @@ export default function ImageForm() {
               type="submit"
               className="w-full hover:cursor-pointer"
               disabled={loading}
+              variant="outline"
             >
               {loading ? <LoaderCircle className="animate-spin" /> : <Upload />}
               {loading ? "Uploading..." : "Upload"}

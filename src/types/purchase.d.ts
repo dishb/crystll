@@ -1,11 +1,12 @@
 import { type ObjectId } from "mongodb";
 
-export default interface Receipt {
+export default interface Purchase {
+  title: string;
   merchant: string;
   total: number;
   tax: number;
   date: Date;
   time: string;
-  userID: ObjectId;
+  userId: ObjectId;
   type: "receipt" | "invoice";
 }

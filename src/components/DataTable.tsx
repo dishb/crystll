@@ -16,12 +16,12 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import columns from "@/data/column";
-import type Receipt from "@/types/receipt";
+import type Purchase from "@/types/purchase";
 import { useState, useEffect } from "react";
 import { RefreshCcw } from "lucide-react";
 
 export default function DataTable() {
-  const [data, setData] = useState<Receipt[]>([]);
+  const [data, setData] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleFetchReceipts = async () => {

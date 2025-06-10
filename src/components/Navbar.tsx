@@ -29,7 +29,6 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const userName = session && session.user ? session.user.name : undefined;
   const userImage = session && session.user ? session.user.image : undefined;
-  console.log(session?.user?.image);
 
   if (!validatePathname(pathname)) return null;
 

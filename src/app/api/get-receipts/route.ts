@@ -11,8 +11,8 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const db = client.db("receiptdb");
-    const receiptColl = db.collection("receipts");
+    const db = client.db("customerdb");
+    const receiptColl = db.collection("purchases");
     const receipts = await receiptColl
       .find({ userId: new ObjectId(session.user.id) })
       .toArray();

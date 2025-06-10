@@ -2,11 +2,14 @@
 
 import { auth } from "@/auth";
 import client from "@/lib/db";
+import Purchase from "@/types/purchase";
 import { ObjectId } from "mongodb";
 
 export default async function uploadFile(formData: FormData) {
   const file = formData.get("file") as File;
-  const type = formData.get("type") as string;
+  const type = formData.get("type") as "receipt" | "invoice";
+  const title = formData.get("title") as string;
+
   let mindeeURL = "";
   if (type === "receipt") {
     mindeeURL =
@@ -53,10 +56,10 @@ export default async function uploadFile(formData: FormData) {
       throw new Error("Not authenticated");
     }
 
-    const db = client.db("receiptdb");
-    const receiptColl = db.collection("receipts");
-
-    await receiptColl.insertOne({
+    const db = client.db("customerdb");
+    const receiptColl = db.collection("purchases");
+    const purchase: Purchase = {
+      title: title,
       userId: new ObjectId(session.user.id),
       total: ocrRes.total_amount.value,
       tax: ocrRes.total_tax.value,
@@ -64,7 +67,9 @@ export default async function uploadFile(formData: FormData) {
       merchant: ocrRes.supplier_name.raw_value,
       time: ocrRes.time ? ocrRes.time.value : "",
       type: type,
-    });
+    };
+
+    await receiptColl.insertOne(purchase);
 
     return { ok: true };
   } catch (err: any) {

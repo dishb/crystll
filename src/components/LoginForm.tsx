@@ -1,5 +1,4 @@
 import { signIn } from "@/auth";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,7 +16,7 @@ export default function LoginForm() {
         <CardHeader>
           <CardTitle>Login</CardTitle>
           <CardDescription>
-            Use your club's official email to sign in with Google.
+            Use your club&apos;s official email to sign in with Google.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -31,6 +30,7 @@ export default function LoginForm() {
               <Button
                 type="submit"
                 className="w-full hover:cursor-pointer"
+                variant="outline"
               >
                 <SiGoogle />
                 Sign in with Google
