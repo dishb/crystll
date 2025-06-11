@@ -9,7 +9,8 @@ export default function FooterWrapper() {
   if (
     !validatePathname(pathname) ||
     pathname === "/dashboard" ||
-    pathname === "/upload"
+    pathname === "/upload" ||
+    pathname === "/login"
   )
     return null;
   return <Footer />;

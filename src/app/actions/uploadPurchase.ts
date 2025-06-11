@@ -5,7 +5,7 @@ import client from "@/lib/db";
 import Purchase from "@/types/purchase";
 import { ObjectId } from "mongodb";
 
-export default async function uploadFile(formData: FormData) {
+export default async function uplaodPurchase(formData: FormData) {
   const file = formData.get("file") as File;
   const type = formData.get("type") as "receipt" | "invoice";
   const title = formData.get("title") as string;
@@ -57,7 +57,7 @@ export default async function uploadFile(formData: FormData) {
     }
 
     const db = client.db("customerdb");
-    const receiptColl = db.collection("purchases");
+    const purchaseCollection = db.collection("purchases");
     const purchase: Purchase = {
       title: title,
       userId: new ObjectId(session.user.id),
@@ -69,7 +69,7 @@ export default async function uploadFile(formData: FormData) {
       type: type,
     };
 
-    await receiptColl.insertOne(purchase);
+    await purchaseCollection.insertOne(purchase);
 
     return { ok: true };
   } catch (err: any) {

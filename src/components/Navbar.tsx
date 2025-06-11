@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
-import navItems from "@/data/navItems";
 import { Button } from "./ui/button";
 import { useSession, signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -75,17 +74,40 @@ export default function Navbar() {
               </Link>
             </>
           ) : (
-            navItems.map((link) => (
+            <>
               <Link
-                key={link.href}
-                href={link.href}
+                href="/"
                 className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
-                  pathname === link.href ? "italic text-grape" : ""
+                  pathname === "/" ? "italic text-grape" : ""
                 }`}
               >
-                {link.label}
+                Home
               </Link>
-            ))
+              <Link
+                href="/about"
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === "/about" ? "italic text-grape" : ""
+                }`}
+              >
+                About
+              </Link>
+              <Link
+                href="/pricing"
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === "/pricing" ? "italic text-grape" : ""
+                }`}
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/contact"
+                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
+                  pathname === "/contact" ? "italic text-grape" : ""
+                }`}
+              >
+                Contact
+              </Link>
+            </>
           )}
         </div>
 

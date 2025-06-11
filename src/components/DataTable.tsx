@@ -13,12 +13,154 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import columns from "@/data/column";
-import type Purchase from "@/types/purchase";
+} from "./ui/table";
+import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { RefreshCcw } from "lucide-react";
+import { type ColumnDef } from "@tanstack/react-table";
+import type Purchase from "@/types/purchase";
+import { Badge } from "./ui/badge";
+import { Pencil } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+  SheetClose,
+} from "./ui/sheet";
+import EditForm from "./EditForm";
+import { Open_Sans } from "next/font/google";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const columns: ColumnDef<Purchase>[] = [
+  {
+    accessorKey: "title",
+    header: "Title",
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+    cell: ({ row }) => {
+      const formatted: string = row.getValue("type");
+      const capitalized =
+        formatted.charAt(0).toUpperCase() + formatted.slice(1);
+      return <Badge variant="outline">{capitalized}</Badge>;
+    },
+  },
+  {
+    accessorKey: "merchant",
+    header: "Merchant",
+  },
+  {
+    accessorKey: "total",
+    header: () => <div className="text-right">Total</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("total"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
+
+      return <div className="text-right">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "tax",
+    header: () => <div className="text-right">Tax</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("tax"));
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
+
+      return <div className="text-right">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "time",
+    header: "Time",
+    cell: ({ row }) => {
+      const time = row.getValue("time");
+      if (time === "") {
+        return <>N/A</>;
+      }
+
+      let formattedTime = "";
+
+      if (typeof time === "string" && /^\d{2}:\d{2}$/.test(time)) {
+        const [hourStr, minuteStr] = time.split(":");
+        let hour = parseInt(hourStr, 10);
+        const ampm = hour >= 12 ? "PM" : "AM";
+        hour = hour % 12 || 12;
+        formattedTime = `${hour}:${minuteStr} ${ampm}`;
+      }
+
+      return <>{formattedTime}</>;
+    },
+  },
+  {
+    accessorKey: "date",
+    header: "Date",
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("date"));
+      const formattedDate = new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date);
+
+      return <>{formattedDate}</>;
+    },
+  },
+  {
+    accessorKey: "edit",
+    header: "Edit",
+    cell: ({ row }) => {
+      const currentValues = {
+        id: String(row.original._id),
+        title: String(row.getValue("title")),
+        merchant: String(row.getValue("merchant")),
+        total: String(row.getValue("total")),
+        tax: String(row.getValue("tax")),
+        date: String(row.getValue("date")),
+        time: String(row.getValue("time")),
+        type: String(row.getValue("type")) as "receipt" | "invoice",
+      };
+
+      return (
+        <Sheet>
+          <SheetTrigger className="hover:cursor-pointer">
+            <Pencil className="w-5" />
+          </SheetTrigger>
+          <SheetContent>
+            <ScrollArea className="max-h-[100vh]">
+              <SheetHeader>
+                <SheetTitle className={openSans.className}>
+                  Edit purchase
+                </SheetTitle>
+                <SheetDescription className={openSans.className}>
+                  Edit the purchase to change any incorrect or missing
+                  information.
+                </SheetDescription>
+              </SheetHeader>
+              <div className="px-4 py-6">
+                <EditForm {...currentValues} />
+              </div>
+            </ScrollArea>
+          </SheetContent>
+        </Sheet>
+      );
+    },
+  },
+];
 
 export default function DataTable() {
   const [data, setData] = useState<Purchase[]>([]);
@@ -26,7 +168,7 @@ export default function DataTable() {
 
   const handleFetchReceipts = async () => {
     setLoading(true);
-    const res = await fetch("/api/get-receipts", { method: "GET" });
+    const res = await fetch("/api/get-purchases", { method: "GET" });
     const receipts = await res.json();
     setData(receipts);
     setLoading(false);
