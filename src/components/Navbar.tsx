@@ -15,7 +15,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import validatePathname from "@/lib/validatePathname";
 import { Open_Sans } from "next/font/google";
 
 const openSans = Open_Sans({
@@ -28,8 +27,6 @@ export default function Navbar() {
   const { data: session, status } = useSession();
   const userName = session && session.user ? session.user.name : undefined;
   const userImage = session && session.user ? session.user.image : undefined;
-
-  if (!validatePathname(pathname)) return null;
 
   return (
     <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm h-16">
