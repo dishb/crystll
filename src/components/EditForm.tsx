@@ -14,7 +14,7 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
-import { Pencil } from "lucide-react";
+import { Save, LoaderCircle } from "lucide-react";
 import type EditFormProps from "@/types/editFormProps";
 import DatePicker from "./DatePicker";
 import { Open_Sans } from "next/font/google";
@@ -45,6 +45,7 @@ export default function EditForm({
   tax,
   time,
   date,
+  onSuccess,
 }: EditFormProps) {
   const [loading, setLoading] = useState(false);
 
@@ -86,6 +87,7 @@ export default function EditForm({
 
     await updatePurchase(formData);
     setLoading(false);
+    onSuccess();
   }
 
   return (
@@ -229,9 +231,10 @@ export default function EditForm({
             type="submit"
             className="w-full hover:cursor-pointer"
             variant="outline"
+            disabled={loading}
           >
-            <Pencil />
-            Edit
+            {loading ? <LoaderCircle className="animate-spin" /> : <Save />}
+            {loading ? "Saving..." : "Save changes"}
           </Button>
         </form>
       </Form>

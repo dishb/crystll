@@ -7,4 +7,5 @@ export default interface EditFormProps {
   tax: string;
   time: string;
   date: string;
+  onSuccess: () => void;
 }

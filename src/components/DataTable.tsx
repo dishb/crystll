@@ -39,132 +39,135 @@ const openSans = Open_Sans({
   display: "swap",
 });
 
-const columns: ColumnDef<Purchase>[] = [
-  {
-    accessorKey: "title",
-    header: "Title",
-  },
-  {
-    accessorKey: "type",
-    header: "Type",
-    cell: ({ row }) => {
-      const formatted: string = row.getValue("type");
-      const capitalized =
-        formatted.charAt(0).toUpperCase() + formatted.slice(1);
-      return <Badge variant="outline">{capitalized}</Badge>;
-    },
-  },
-  {
-    accessorKey: "merchant",
-    header: "Merchant",
-  },
-  {
-    accessorKey: "total",
-    header: () => <div className="text-right">Total</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("total"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right">{formatted}</div>;
-    },
-  },
-  {
-    accessorKey: "tax",
-    header: () => <div className="text-right">Tax</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("tax"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right">{formatted}</div>;
-    },
-  },
-  {
-    accessorKey: "time",
-    header: "Time",
-    cell: ({ row }) => {
-      const time = row.getValue("time");
-      if (time === "") {
-        return <>N/A</>;
-      }
-
-      let formattedTime = "";
-
-      if (typeof time === "string" && /^\d{2}:\d{2}$/.test(time)) {
-        const [hourStr, minuteStr] = time.split(":");
-        let hour = parseInt(hourStr, 10);
-        const ampm = hour >= 12 ? "PM" : "AM";
-        hour = hour % 12 || 12;
-        formattedTime = `${hour}:${minuteStr} ${ampm}`;
-      }
-
-      return <>{formattedTime}</>;
-    },
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("date"));
-      const formattedDate = new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      }).format(date);
-
-      return <>{formattedDate}</>;
-    },
-  },
-  {
-    accessorKey: "edit",
-    header: "Edit",
-    cell: ({ row }) => {
-      const currentValues = {
-        id: String(row.original._id),
-        title: String(row.getValue("title")),
-        merchant: String(row.getValue("merchant")),
-        total: String(row.getValue("total")),
-        tax: String(row.getValue("tax")),
-        date: String(row.getValue("date")),
-        time: String(row.getValue("time")),
-        type: String(row.getValue("type")) as "receipt" | "invoice",
-      };
-
-      return (
-        <Sheet>
-          <SheetTrigger className="hover:cursor-pointer">
-            <Pencil className="w-5" />
-          </SheetTrigger>
-          <SheetContent>
-            <ScrollArea className="max-h-[100vh]">
-              <SheetHeader>
-                <SheetTitle className={openSans.className}>
-                  Edit purchase
-                </SheetTitle>
-                <SheetDescription className={openSans.className}>
-                  Edit the purchase to change any incorrect or missing
-                  information.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="px-4 py-6">
-                <EditForm {...currentValues} />
-              </div>
-            </ScrollArea>
-          </SheetContent>
-        </Sheet>
-      );
-    },
-  },
-];
-
 export default function DataTable() {
   const [data, setData] = useState<Purchase[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const columns: ColumnDef<Purchase>[] = [
+    {
+      accessorKey: "title",
+      header: "Title",
+    },
+    {
+      accessorKey: "type",
+      header: "Type",
+      cell: ({ row }) => {
+        const formatted: string = row.getValue("type");
+        const capitalized =
+          formatted.charAt(0).toUpperCase() + formatted.slice(1);
+        return <Badge variant="outline">{capitalized}</Badge>;
+      },
+    },
+    {
+      accessorKey: "merchant",
+      header: "Merchant",
+    },
+    {
+      accessorKey: "total",
+      header: () => <div className="text-right">Total</div>,
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("total"));
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount);
+
+        return <div className="text-right">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "tax",
+      header: () => <div className="text-right">Tax</div>,
+      cell: ({ row }) => {
+        const amount = parseFloat(row.getValue("tax"));
+        const formatted = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(amount);
+
+        return <div className="text-right">{formatted}</div>;
+      },
+    },
+    {
+      accessorKey: "time",
+      header: "Time",
+      cell: ({ row }) => {
+        const time = row.getValue("time");
+        if (time === "") {
+          return <>N/A</>;
+        }
+
+        let formattedTime = "";
+
+        if (typeof time === "string" && /^\d{2}:\d{2}$/.test(time)) {
+          const [hourStr, minuteStr] = time.split(":");
+          let hour = parseInt(hourStr, 10);
+          const ampm = hour >= 12 ? "PM" : "AM";
+          hour = hour % 12 || 12;
+          formattedTime = `${hour}:${minuteStr} ${ampm}`;
+        }
+
+        return <>{formattedTime}</>;
+      },
+    },
+    {
+      accessorKey: "date",
+      header: "Date",
+      cell: ({ row }) => {
+        const date = new Date(row.getValue("date"));
+        const formattedDate = new Intl.DateTimeFormat("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }).format(date);
+
+        return <>{formattedDate}</>;
+      },
+    },
+    {
+      accessorKey: "edit",
+      header: "Edit",
+      cell: ({ row }) => {
+        const currentValues = {
+          id: String(row.original._id),
+          title: String(row.getValue("title")),
+          merchant: String(row.getValue("merchant")),
+          total: String(row.getValue("total")),
+          tax: String(row.getValue("tax")),
+          date: String(row.getValue("date")),
+          time: String(row.getValue("time")),
+          type: String(row.getValue("type")) as "receipt" | "invoice",
+        };
+
+        return (
+          <Sheet>
+            <SheetTrigger className="hover:cursor-pointer">
+              <Pencil className="w-5" />
+            </SheetTrigger>
+            <SheetContent>
+              <ScrollArea className="max-h-[100vh]">
+                <SheetHeader>
+                  <SheetTitle className={openSans.className}>
+                    Edit purchase
+                  </SheetTitle>
+                  <SheetDescription className={openSans.className}>
+                    Edit the purchase to change any incorrect or missing
+                    information.
+                  </SheetDescription>
+                </SheetHeader>
+                <div className="px-4 py-6">
+                  <EditForm
+                    {...currentValues}
+                    onSuccess={handleFetchReceipts}
+                  />
+                </div>
+              </ScrollArea>
+            </SheetContent>
+          </Sheet>
+        );
+      },
+    },
+  ];
 
   const handleFetchReceipts = async () => {
     setLoading(true);
