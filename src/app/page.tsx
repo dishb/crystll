@@ -1,12 +1,12 @@
 import Image from "next/image";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Upload, MousePointerClick, History } from "lucide-react";
-import Link from "next/link";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "@/components/ui/accordion";
+// import { Upload, MousePointerClick, History } from "lucide-react";
+// import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -41,7 +41,7 @@ export default function Page() {
           className="w-7/16 h-auto"
         />
       </div>
-
+      {/* 
       <hr className="w-full border-1 my-30" />
 
       <div className="w-full px-30 flex flex-col gap-50">
@@ -172,7 +172,7 @@ export default function Page() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </div>
+      </div> */}
     </div>
   );
 }
