@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
 import Popup from "./Popup";
-import uplaodPurchase from "@/app/actions/uploadPurchase";
+import uploadPurchase from "@/app/actions/uploadPurchase";
 import {
   Form,
   FormField,
@@ -71,7 +71,7 @@ export default function ImageForm() {
     formData.append("title", values.title);
 
     startTransition(async () => {
-      const res = await uplaodPurchase(formData);
+      const res = await uploadPurchase(formData);
       if (!res.ok) {
         createPopup(
           "500: Internal Server Error",

@@ -1,4 +1,4 @@
-import { type ObjectId } from "mongodb";
+import type { ObjectId } from "mongodb";
 
 export default interface Purchase {
   _id?: ObjectId;

@@ -1,4 +1,4 @@
-import Google from "next-auth/providers/google"
+import Google from "next-auth/providers/google";
 import type { NextAuthConfig } from "next-auth";
 
 export default {
@@ -12,6 +12,7 @@ export default {
       if (session.user && token && token.sub) {
         session.user.id = token.sub;
       }
+
       return session;
     },
   },

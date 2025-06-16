@@ -5,7 +5,7 @@ import client from "@/lib/db";
 import Purchase from "@/types/purchase";
 import { ObjectId } from "mongodb";
 
-export default async function uplaodPurchase(formData: FormData) {
+export default async function uploadPurchase(formData: FormData) {
   const file = formData.get("file") as File;
   const type = formData.get("type") as "receipt" | "invoice";
   const title = formData.get("title") as string;
@@ -18,17 +18,13 @@ export default async function uplaodPurchase(formData: FormData) {
     mindeeURL = "https://api.mindee.net/v1/products/mindee/invoices/v4/predict";
   }
 
-  if (!file) {
-    return { ok: false, error: "No file uploaded" };
-  }
-
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
   const fileName = file.name;
   const mindeeAPIKey = process.env.MINDEE_API_KEY;
 
   if (!mindeeAPIKey) {
-    return { ok: false, error: "Mindee API key not set" };
+    return { ok: false, error: "Mindee API key not set." };
   }
 
   const mindeeForm = new FormData();
@@ -52,8 +48,8 @@ export default async function uplaodPurchase(formData: FormData) {
 
   try {
     const session = await auth();
-    if (!session || !session.user) {
-      throw new Error("Not authenticated");
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Not authenticated.");
     }
 
     const db = client.db("customerdb");

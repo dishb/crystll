@@ -4,18 +4,11 @@ import Image from "next/image";
 import { Separator } from "./ui/separator";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useSession, signOut } from "next-auth/react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+import AccountMenu from "./AccountMenu";
 import { Open_Sans } from "next/font/google";
+import { isAuthedPath } from "@/lib/utils";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -25,13 +18,19 @@ const openSans = Open_Sans({
 export default function Navbar() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const userName = session && session.user ? session.user.name : undefined;
-  const userImage = session && session.user ? session.user.image : undefined;
+  const userName =
+    session && session.user && session.user.name
+      ? session.user.name
+      : undefined;
+  const userImage =
+    session && session.user && session.user.image
+      ? session.user.image
+      : undefined;
 
   return (
     <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm h-16">
       <div className={`flex-1 flex justify-between px-10 items-center`}>
-        <div className="flex-1 flex justify-start items-center gap-2">
+        <Link href="/" className="flex-1 flex justify-start items-center gap-2">
           <Image
             src="/logo.svg"
             alt="Our product's logo, a blue crystal."
@@ -40,10 +39,10 @@ export default function Navbar() {
             className="w-8 h-auto"
           />
           <h2 className="text-2xl">crystll.</h2>
-        </div>
+        </Link>
 
         <div className="flex-2 flex justify-center items-center gap-4">
-          {["/upload", "/dashboard"].includes(pathname) ? (
+          {isAuthedPath(pathname) ? (
             <>
               <Link
                 href="/"
@@ -109,46 +108,33 @@ export default function Navbar() {
         </div>
 
         <div className="flex-1 flex justify-end items-center gap-4">
-          {["/upload", "/dashboard"].includes(pathname) ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="border shadow-xs w-10 h-10 hover:cursor-pointer">
-                  <AvatarImage src={userImage ?? undefined} />
-                  <AvatarFallback>
-                    {userName
-                      ? userName
-                          .split(" ")
-                          .map((n) => n[0])
-                          .join("")
-                      : "?"}
-                  </AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel className={openSans.className}>
-                  My Account
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className={`${openSans.className} hover:cursor-pointer`}
-                  onClick={() => signOut()}
-                >
-                  Log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          {isAuthedPath(pathname) ? (
+            <AccountMenu userName={userName} userImage={userImage} />
           ) : (
-            <Button
-              asChild
-              variant="outline"
-              className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
-            >
+            <>
               {status !== "authenticated" ? (
-                <Link href="/login">Login</Link>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
+                >
+                  <Link href="/signup">Sign up</Link>
+                </Button>
               ) : (
-                <Link href="/dashboard">Dashboard</Link>
+                <></>
               )}
-            </Button>
+              <Button
+                asChild
+                variant="outline"
+                className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
+              >
+                {status !== "authenticated" ? (
+                  <Link href="/login">Login</Link>
+                ) : (
+                  <Link href="/dashboard">Dashboard</Link>
+                )}
+              </Button>
+            </>
           )}
         </div>
       </div>

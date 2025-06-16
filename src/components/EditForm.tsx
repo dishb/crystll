@@ -80,9 +80,9 @@ export default function EditForm({
     formData.append("title", values.title);
     formData.append("type", values.type);
     formData.append("merchant", values.merchant);
-    formData.append("total", String(values.total));
-    formData.append("tax", String(values.tax));
-    formData.append("date", String(values.date));
+    formData.append("total", values.total.toString());
+    formData.append("tax", values.tax.toString());
+    formData.append("date", values.date.toString());
     formData.append("time", values.time);
 
     await updatePurchase(formData);

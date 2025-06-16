@@ -1,9 +1,9 @@
-import LoginForm from "@/components/LoginForm";
 import { Open_Sans } from "next/font/google";
 import type { Metadata } from "next";
+import SetupForm from "@/components/SetupForm";
 
 export const metadata: Metadata = {
-  title: "crystll. | login",
+  title: "crystll. | setup",
 };
 
 const openSans = Open_Sans({
@@ -14,10 +14,10 @@ const openSans = Open_Sans({
 export default function Page() {
   return (
     <div
-      className={`h-screen -mt-16 flex w-full items-center justify-center p-6 ${openSans.className}`}
+      className={`h-screen -mt-16 ${openSans.className} p-6 flex w-full justify-center items-center`}
     >
       <div className="w-full max-w-sm">
-        <LoginForm />
+        <SetupForm />
       </div>
     </div>
   );

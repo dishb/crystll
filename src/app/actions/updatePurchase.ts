@@ -16,8 +16,8 @@ export default async function updatePurchase(formData: FormData) {
 
   try {
     const session = await auth();
-    if (!session || !session.user) {
-      throw new Error("Not authenticated");
+    if (!session || !session.user || !session.user.id) {
+      throw new Error("Not authenticated.");
     }
 
     const db = client.db("customerdb");
