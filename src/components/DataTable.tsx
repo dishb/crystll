@@ -16,7 +16,6 @@ import {
 } from "./ui/table";
 import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
-import { RefreshCcw } from "lucide-react";
 import { type ColumnDef } from "@tanstack/react-table";
 import type Purchase from "@/types/purchase";
 import { Badge } from "./ui/badge";
@@ -41,7 +40,6 @@ const openSans = Open_Sans({
 
 export default function DataTable() {
   const [data, setData] = useState<Purchase[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const columns: ColumnDef<Purchase>[] = [
     {
@@ -55,6 +53,7 @@ export default function DataTable() {
         const formatted: string = row.getValue("type");
         const capitalized =
           formatted.charAt(0).toUpperCase() + formatted.slice(1);
+
         return <Badge variant="outline">{capitalized}</Badge>;
       },
     },
@@ -169,13 +168,11 @@ export default function DataTable() {
     },
   ];
 
-  const handleFetchReceipts = async () => {
-    setLoading(true);
+  async function handleFetchReceipts() {
     const res = await fetch("/api/get-purchases", { method: "GET" });
-    const receipts = await res.json();
-    setData(receipts);
-    setLoading(false);
-  };
+    const purchases = await res.json();
+    setData(purchases);
+  }
 
   useEffect(() => {
     handleFetchReceipts();
@@ -190,17 +187,6 @@ export default function DataTable() {
 
   return (
     <>
-      <div className="flex justify-end mb-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleFetchReceipts}
-          disabled={loading}
-          className="hover:cursor-pointer"
-        >
-          {loading ? <RefreshCcw className="animate-spin" /> : <RefreshCcw />}
-        </Button>
-      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

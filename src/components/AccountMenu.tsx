@@ -10,8 +10,8 @@ import { signOut } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import type AccountMenuProps from "@/types/accountMenuProps";
 import { Open_Sans } from "next/font/google";
+import { LogOut, Bolt } from "lucide-react";
 import Link from "next/link";
-import { Bolt, LogOut } from "lucide-react";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -39,6 +39,14 @@ export default function AccountMenu({ userImage, userName }: AccountMenuProps) {
           My account
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem
+          asChild
+          className={`${openSans.className} hover:cursor-pointer flex w-full items-center gap-2`}
+        >
+          <Link href="/settings">
+            <Bolt /> Settings
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           className={`${openSans.className} hover:cursor-pointer flex w-full items-center gap-2`}
           onClick={() => signOut({ callbackUrl: "/" })}

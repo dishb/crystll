@@ -5,7 +5,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
-import { LoaderCircle, WandSparkles } from "lucide-react";
+import { LoaderCircle, Save } from "lucide-react";
 import {
   Form,
   FormField,
@@ -23,8 +23,8 @@ import {
   CardContent,
 } from "./ui/card";
 import { Open_Sans } from "next/font/google";
-import { setupSettings } from "@/app/actions/settings";
-import { useRouter } from "next/navigation";
+import { updateSettings } from "@/app/actions/settings";
+import type SettingsFormProps from "@/types/settingsFormProps";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -37,25 +37,22 @@ const formSchema = z.object({
     .min(0.01, "Initial balance must be greater than $0.00"),
 });
 
-export default function SetupForm() {
+export default function SettingsForm({ initialBalance }: SettingsFormProps) {
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   async function onSubmit(values: { balance: number }) {
     setLoading(true);
     const formData = new FormData();
     formData.append("balance", values.balance.toString());
 
-    await setupSettings(formData);
+    await updateSettings(formData);
     setLoading(false);
-
-    router.push("/dashboard");
   }
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      balance: 0.0,
+      balance: initialBalance,
     },
     mode: "onChange",
   });
@@ -64,11 +61,10 @@ export default function SetupForm() {
     <div className={openSans.className}>
       <Card>
         <CardHeader>
-          <CardTitle>Account setup</CardTitle>
+          <CardTitle>Account settings</CardTitle>
           <CardDescription>
-            Set up your account with an initial balance. Optionally, migrate
-            from your previous finance tracker by loading existing purchases
-            from Google Sheets (coming soon).
+            Set your club's initial balance. Optionally, import a purchase
+            history from Google Sheets (coming soon).
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -103,12 +99,8 @@ export default function SetupForm() {
                 variant="outline"
                 disabled={loading}
               >
-                {loading ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  <WandSparkles />
-                )}
-                {loading ? "Setting up..." : "Finish setup"}
+                {loading ? <LoaderCircle className="animate-spin" /> : <Save />}
+                {loading ? "Saving changes..." : "Save changes"}
               </Button>
             </form>
           </Form>

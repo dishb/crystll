@@ -7,16 +7,16 @@ export async function GET() {
   try {
     const session = await auth();
 
-    if (!session || !session.user) {
+    if (!session || !session.user || !session.user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const db = client.db("customerdb");
-    const receiptColl = db.collection("purchases");
-    const receipts = await receiptColl
+    const purchaseCollection = db.collection("purchases");
+    const purchases = await purchaseCollection
       .find({ userId: new ObjectId(session.user.id) })
       .toArray();
-    return NextResponse.json(receipts, { status: 200 });
+    return NextResponse.json(purchases, { status: 200 });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

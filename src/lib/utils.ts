@@ -6,5 +6,5 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function isAuthedPath(pathname: string): boolean {
-  return ["/upload", "/dashboard", "/setup"].includes(pathname);
+  return ["/upload", "/dashboard", "/setup", "/settings"].includes(pathname);
 }
