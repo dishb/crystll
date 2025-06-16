@@ -63,7 +63,7 @@ export default function SettingsForm({ initialBalance }: SettingsFormProps) {
         <CardHeader>
           <CardTitle>Account settings</CardTitle>
           <CardDescription>
-            Set your club's initial balance. Optionally, import a purchase
+            Set your club&apos;s initial balance. Optionally, import a purchase
             history from Google Sheets (coming soon).
           </CardDescription>
         </CardHeader>
