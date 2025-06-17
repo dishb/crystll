@@ -53,7 +53,22 @@ export default function DataTable() {
         const capitalized =
           formatted.charAt(0).toUpperCase() + formatted.slice(1);
 
-        return <Badge variant="outline">{capitalized}</Badge>;
+        const type: string = row.getValue("type");
+        let color = "";
+        if (type === "receipt") {
+          color = "grape";
+        } else if (type === "invoice") {
+          color = "ocean";
+        } else if (type === "fundraiser") {
+          color = "blue";
+        }
+        console.log(color);
+
+        return (
+          <Badge variant="outline" className={`text-${color}`}>
+            {capitalized}
+          </Badge>
+        );
       },
     },
     {

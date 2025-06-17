@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { FileClock, LoaderCircle } from "lucide-react";
-import Popup from "./Popup";
 import {
   Form,
   FormField,
@@ -25,6 +24,7 @@ import {
 } from "./ui/card";
 import { uploadFundraiser } from "@/app/actions/fundraiser";
 import DatePicker from "./DatePicker";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   title: z.string().max(40, "Title cannot be more than 40 characters long."),
@@ -36,9 +36,6 @@ const formSchema = z.object({
 });
 
 export default function FundraiserForm() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupTitle, setPopupTitle] = useState("");
-  const [popupDescription, setPopupDescription] = useState("");
   const [loading, startTransition] = useTransition();
 
   const form = useForm({
@@ -51,12 +48,6 @@ export default function FundraiserForm() {
       date: new Date(),
     },
   });
-
-  function createPopup(title: string, description: string) {
-    setPopupTitle(title);
-    setPopupDescription(description);
-    setShowPopup(true);
-  }
 
   async function onSubmit(values: {
     amount: number;
@@ -71,10 +62,14 @@ export default function FundraiserForm() {
     startTransition(async () => {
       const res = await uploadFundraiser(formData);
       if (!res.ok) {
-        createPopup(
-          "500: Internal Server Error",
-          res.error || "An error occurred logging your fundraiser."
-        );
+        toast.error("500: Internal Server Error", {
+          description:
+            res.error || "An error occurred logging your fundraiser.",
+        });
+      } else {
+        toast.success("Fundraiser created", {
+          description: "Go to the dashboard to view the fundraiser.",
+        });
       }
     });
   }
@@ -172,13 +167,6 @@ export default function FundraiserForm() {
             </Button>
           </form>
         </Form>
-        {showPopup && (
-          <Popup
-            title={popupTitle}
-            description={popupDescription}
-            onClose={() => setShowPopup(false)}
-          />
-        )}
       </CardContent>
     </Card>
   );

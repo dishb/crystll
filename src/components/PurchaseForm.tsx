@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
 import { Upload, LoaderCircle } from "lucide-react";
-import Popup from "./Popup";
+import { toast } from "sonner";
 import { uploadPurchase } from "@/app/actions/purchase";
 import {
   Form,
@@ -40,9 +40,6 @@ const formSchema = z.object({
 });
 
 export default function PurchaseForm() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupTitle, setPopupTitle] = useState("");
-  const [popupDescription, setPopupDescription] = useState("");
   const [loading, startTransition] = useTransition();
 
   const form = useForm({
@@ -53,12 +50,6 @@ export default function PurchaseForm() {
     },
     mode: "onChange",
   });
-
-  function createPopup(title: string, description: string) {
-    setPopupTitle(title);
-    setPopupDescription(description);
-    setShowPopup(true);
-  }
 
   async function onSubmit(values: {
     file?: File;
@@ -73,10 +64,13 @@ export default function PurchaseForm() {
     startTransition(async () => {
       const res = await uploadPurchase(formData);
       if (!res.ok) {
-        createPopup(
-          "500: Internal Server Error",
-          res.error || "An error occurred uploading your image."
-        );
+        toast.error("500: Internal Server Error", {
+          description: res.error || "An error occurred uploading your image.",
+        });
+      } else {
+        toast.success("Purchase created", {
+          description: "Go to the dashboard to view the purchase.",
+        });
       }
     });
   }
@@ -185,13 +179,6 @@ export default function PurchaseForm() {
             </Button>
           </form>
         </Form>
-        {showPopup && (
-          <Popup
-            title={popupTitle}
-            description={popupDescription}
-            onClose={() => setShowPopup(false)}
-          />
-        )}
       </CardContent>
     </Card>
   );

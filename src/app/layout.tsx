@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   description: "Be crystal clear with your club's finances.",
@@ -37,6 +38,7 @@ export default function RootLayout({
         <FooterWrapper />
         <SpeedInsights />
         <Analytics />
+        <Toaster richColors closeButton theme="light" />
       </body>
     </html>
   );
