@@ -3,18 +3,23 @@
 import { Card, CardContent } from "./ui/card";
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import {  RefreshCcw } from "lucide-react";
-import { calculateBalance, calculateEarnings, calculateExpenses } from "@/app/actions/account";
+import { RefreshCcw } from "lucide-react";
+import {
+  calculateBalance,
+  calculateEarnings,
+  calculateExpenses,
+} from "@/app/actions/account";
 import {
   BanknoteArrowUp,
   BanknoteArrowDown,
   CircleDollarSign,
 } from "lucide-react";
+import AnimatedCounter from "./AnimatedCounter";
 
 export default function AccountOverview() {
-  const [expenseDisplay, setExpenseDisplay] = useState("");
-  const [balanceDisplay, setBalanceDisplay] = useState("");
-  const [earningDisplay, setEarningDisplay] = useState("");
+  const [expenseDisplay, setExpenseDisplay] = useState<number | null>(null);
+  const [balanceDisplay, setBalanceDisplay] = useState<number | null>(null);
+  const [earningDisplay, setEarningDisplay] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function updateAccountInfo() {
@@ -24,20 +29,12 @@ export default function AccountOverview() {
       currency: "USD",
     });
     const expenses = await calculateExpenses();
-    const formattedExpenses =
-      expenses !== null ? formatterUSD.format(expenses) : "";
-
     const balance = await calculateBalance();
-    const formattedBalance =
-      balance !== null ? formatterUSD.format(balance) : "";
-
     const earnings = await calculateEarnings();
-    const formattedEarnings =
-      earnings !== null ? formatterUSD.format(earnings) : "";
 
-    setExpenseDisplay(formattedExpenses);
-    setBalanceDisplay(formattedBalance);
-    setEarningDisplay(formattedEarnings);
+    setExpenseDisplay(expenses);
+    setBalanceDisplay(balance);
+    setEarningDisplay(earnings);
     setLoading(false);
   }
 
@@ -65,7 +62,13 @@ export default function AccountOverview() {
             <p className="uppercase mb-2 text-grape flex gap-2 items-center">
               <CircleDollarSign /> Balance
             </p>
-            <p className="text-4xl">{balanceDisplay}</p>
+            <p className="text-4xl">
+              <AnimatedCounter
+                from={0}
+                to={balanceDisplay ?? 0}
+                format="currency"
+              />
+            </p>
           </CardContent>
         </Card>
 
@@ -74,7 +77,13 @@ export default function AccountOverview() {
             <p className="uppercase mb-2 text-ocean flex gap-2 items-center">
               <BanknoteArrowDown /> Expenses
             </p>
-            <p className="text-4xl">{expenseDisplay}</p>
+            <p className="text-4xl">
+              <AnimatedCounter
+                from={0}
+                to={expenseDisplay ?? 0}
+                format="currency"
+              />
+            </p>
           </CardContent>
         </Card>
 
@@ -83,7 +92,13 @@ export default function AccountOverview() {
             <p className="uppercase mb-2 text-blue flex gap-2 items-center">
               <BanknoteArrowUp /> Earnings
             </p>
-            <p className="text-4xl">{earningDisplay}</p>
+            <p className="text-4xl">
+              <AnimatedCounter
+                from={0}
+                to={earningDisplay ?? 0}
+                format="currency"
+              />
+            </p>
           </CardContent>
         </Card>
       </div>

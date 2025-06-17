@@ -53,11 +53,13 @@ export default function FundraiserForm() {
     amount: number;
     title: string;
     time: string;
+    date: Date;
   }) {
     const formData = new FormData();
     formData.append("amount", values.amount.toString());
     formData.append("title", values.title);
     formData.append("time", values.time);
+    formData.append("date", values.date.toISOString());
 
     startTransition(async () => {
       const res = await uploadFundraiser(formData);

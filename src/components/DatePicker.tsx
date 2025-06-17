@@ -52,6 +52,7 @@ export default function DatePicker({
                 setOpen(false);
               }}
               className={openSans.className}
+              defaultMonth={date || undefined}
             />
           </PopoverContent>
         </Popover>
