@@ -7,6 +7,27 @@ import Purchase from "@/types/purchase";
 
 const db = client.db("customerdb");
 
+export async function calculateEarnings() {
+  const session = await auth();
+  if (!session || !session.user || !session.user.id) {
+    return null;
+  }
+
+  const purchaseCollection = db.collection("purchases");
+  const earnings = (await purchaseCollection
+    .find({
+      userId: new ObjectId(session.user.id),
+      type: "fundraiser",
+    })
+    .toArray()) as Purchase[];
+  const totalEarnings = earnings.reduce(
+    (sum: number, purchase: Purchase) => sum + (purchase.total || 0),
+    0
+  );
+
+  return totalEarnings;
+}
+
 export async function calculateExpenses() {
   const session = await auth();
   if (!session || !session.user || !session.user.id) {
@@ -15,7 +36,10 @@ export async function calculateExpenses() {
 
   const purchaseCollection = db.collection("purchases");
   const purchases = (await purchaseCollection
-    .find({ userId: new ObjectId(session.user.id) })
+    .find({
+      userId: new ObjectId(session.user.id),
+      type: { $ne: "fundraiser" },
+    })
     .toArray()) as Purchase[];
   const totalExpenses = purchases.reduce(
     (sum: number, purchase: Purchase) => sum + (purchase.total || 0),
@@ -45,5 +69,10 @@ export async function calculateBalance() {
     return null;
   }
 
-  return settings.initialBalance - expenses;
+  const earnings = await calculateEarnings();
+  if (earnings === null) {
+    return null;
+  }
+
+  return settings.initialBalance - expenses + earnings;
 }

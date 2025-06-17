@@ -9,5 +9,5 @@ export default interface Purchase {
   date: Date;
   time: string;
   userId: ObjectId;
-  type: "receipt" | "invoice";
+  type: "receipt" | "invoice" | "fundraiser";
 }

@@ -19,7 +19,7 @@ import type EditFormProps from "@/types/editFormProps";
 import DatePicker from "./DatePicker";
 import { Open_Sans } from "next/font/google";
 import { useState } from "react";
-import updatePurchase from "@/app/actions/updatePurchase";
+import { updatePurchase } from "@/app/actions/purchase";
 
 const openSans = Open_Sans({
   subsets: ["latin"],

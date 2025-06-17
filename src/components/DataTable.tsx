@@ -27,7 +27,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetClose,
 } from "./ui/sheet";
 import EditForm from "./EditForm";
 import { Open_Sans } from "next/font/google";
@@ -127,6 +126,10 @@ export default function DataTable() {
       accessorKey: "edit",
       header: "Edit",
       cell: ({ row }) => {
+        if (String(row.getValue("type")) === "fundraiser") {
+          return <></>;
+        }
+
         const currentValues = {
           id: String(row.original._id),
           title: String(row.getValue("title")),

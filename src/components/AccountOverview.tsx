@@ -3,8 +3,8 @@
 import { Card, CardContent } from "./ui/card";
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import { Circle, RefreshCcw } from "lucide-react";
-import { calculateBalance, calculateExpenses } from "@/app/actions/account";
+import {  RefreshCcw } from "lucide-react";
+import { calculateBalance, calculateEarnings, calculateExpenses } from "@/app/actions/account";
 import {
   BanknoteArrowUp,
   BanknoteArrowDown,
@@ -14,6 +14,7 @@ import {
 export default function AccountOverview() {
   const [expenseDisplay, setExpenseDisplay] = useState("");
   const [balanceDisplay, setBalanceDisplay] = useState("");
+  const [earningDisplay, setEarningDisplay] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function updateAccountInfo() {
@@ -25,12 +26,18 @@ export default function AccountOverview() {
     const expenses = await calculateExpenses();
     const formattedExpenses =
       expenses !== null ? formatterUSD.format(expenses) : "";
+
     const balance = await calculateBalance();
     const formattedBalance =
       balance !== null ? formatterUSD.format(balance) : "";
 
+    const earnings = await calculateEarnings();
+    const formattedEarnings =
+      earnings !== null ? formatterUSD.format(earnings) : "";
+
     setExpenseDisplay(formattedExpenses);
     setBalanceDisplay(formattedBalance);
+    setEarningDisplay(formattedEarnings);
     setLoading(false);
   }
 
@@ -76,7 +83,7 @@ export default function AccountOverview() {
             <p className="uppercase mb-2 text-blue flex gap-2 items-center">
               <BanknoteArrowUp /> Earnings
             </p>
-            <p className="text-4xl">Coming soon.</p>
+            <p className="text-4xl">{earningDisplay}</p>
           </CardContent>
         </Card>
       </div>
