@@ -61,59 +61,59 @@ export default function SetupForm() {
   });
 
   return (
-    <div className={openSans.className}>
-      <Card>
-        <CardHeader>
-          <CardTitle>Account setup</CardTitle>
-          <CardDescription>
-            Set up your account with an initial balance. Optionally, migrate
-            from your previous finance tracker by loading existing purchases
-            from Google Sheets (coming soon).
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-6"
+    <Card>
+      <CardHeader>
+        <CardTitle className="font-semibold text-grape text-2xl">
+          Account setup
+        </CardTitle>
+        <CardDescription className={openSans.className}>
+          Set up your account with an initial balance. Optionally, migrate from
+          your previous finance tracker by loading existing purchases from
+          Google Sheets (coming soon).
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className={`flex flex-col gap-6 ${openSans.className}`}
+          >
+            <FormField
+              control={form.control}
+              name="balance"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="balance">Initial balance</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="balance"
+                      type="number"
+                      step={0.01}
+                      min={0.0}
+                      disabled={loading}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="w-full hover:cursor-pointer"
+              variant="outline"
+              disabled={loading}
             >
-              <FormField
-                control={form.control}
-                name="balance"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor="balance">Initial balance</FormLabel>
-                    <FormControl>
-                      <Input
-                        id="balance"
-                        type="number"
-                        step={0.01}
-                        min={0.0}
-                        disabled={loading}
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button
-                type="submit"
-                className="w-full hover:cursor-pointer"
-                variant="outline"
-                disabled={loading}
-              >
-                {loading ? (
-                  <LoaderCircle className="animate-spin" />
-                ) : (
-                  <WandSparkles />
-                )}
-                {loading ? "Setting up..." : "Finish setup"}
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+              {loading ? (
+                <LoaderCircle className="animate-spin text-ocean" />
+              ) : (
+                <WandSparkles className="text-ocean" />
+              )}
+              {loading ? "Setting up..." : "Finish setup"}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }

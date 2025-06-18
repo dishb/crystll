@@ -115,7 +115,7 @@ export default function Navbar() {
               {status !== "authenticated" ? (
                 <Button
                   asChild
-                  variant="outline"
+                  variant="grape"
                   className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
                 >
                   <Link href="/signup">Sign up</Link>
@@ -125,7 +125,7 @@ export default function Navbar() {
               )}
               <Button
                 asChild
-                variant="outline"
+                variant="ocean"
                 className="w-24 text-lg px-6 py-5 font-normal hover:cursor-pointer"
               >
                 {status !== "authenticated" ? (

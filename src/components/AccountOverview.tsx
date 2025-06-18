@@ -15,6 +15,12 @@ import {
   CircleDollarSign,
 } from "lucide-react";
 import AnimatedCounter from "./AnimatedCounter";
+import { Open_Sans } from "next/font/google";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function AccountOverview() {
   const [expenseDisplay, setExpenseDisplay] = useState<number | null>(null);
@@ -24,10 +30,6 @@ export default function AccountOverview() {
 
   async function updateAccountInfo() {
     setLoading(true);
-    const formatterUSD = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
     const expenses = await calculateExpenses();
     const balance = await calculateBalance();
     const earnings = await calculateEarnings();
@@ -43,7 +45,7 @@ export default function AccountOverview() {
   }, []);
 
   return (
-    <>
+    <div className={`flex flex-col gap-4 ${openSans.className}`}>
       <div className="flex">
         <Button
           variant="outline"
@@ -56,6 +58,7 @@ export default function AccountOverview() {
           {loading ? "Refreshing..." : "Refresh"}
         </Button>
       </div>
+
       <div className="flex gap-4">
         <Card className="flex-1">
           <CardContent>
@@ -102,6 +105,6 @@ export default function AccountOverview() {
           </CardContent>
         </Card>
       </div>
-    </>
+    </div>
   );
 }

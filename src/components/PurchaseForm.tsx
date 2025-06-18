@@ -25,6 +25,12 @@ import {
   CardContent,
 } from "./ui/card";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
+import { Open_Sans } from "next/font/google";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const formSchema = z.object({
   title: z.string().max(40, "Title cannot be more than 40 characters long."),
@@ -78,13 +84,15 @@ export default function PurchaseForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Log new purchase</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-2xl text-grape font-semibold">
+          Log new purchase
+        </CardTitle>
+        <CardDescription className={openSans.className}>
           Upload an image of a receipt or invoice. Must be a PNG, JPEG, GIF,
           WEBP, TIFF, HEIC, or PDF.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={openSans.className}>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -174,7 +182,11 @@ export default function PurchaseForm() {
               disabled={loading}
               variant="outline"
             >
-              {loading ? <LoaderCircle className="animate-spin" /> : <Upload />}
+              {loading ? (
+                <LoaderCircle className="animate-spin text-ocean" />
+              ) : (
+                <Upload className="text-ocean" />
+              )}
               {loading ? "Uploading..." : "Upload"}
             </Button>
           </form>

@@ -21,7 +21,7 @@ export default function Page() {
           <div className="flex flex-col w-full h-full">
             <p className="text-4xl">
               Upload. Click.{" "}
-              <span className="font-medium text-grape">Done.</span>
+              <span className="font-semibold text-grape">Done.</span>
             </p>
             <h1 className="text-9xl mt-4">
               Yes, it&apos;s <span className="italic text-ocean">that</span>{" "}
