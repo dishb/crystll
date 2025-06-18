@@ -14,7 +14,7 @@ const openSans = Open_Sans({
 export default function Page() {
   return (
     <div
-      className={`h-screen -mt-16 ${openSans.className} p-6 flex w-full justify-center items-center`}
+      className={`h-screen -mt-18 ${openSans.className} p-6 flex w-full justify-center items-center`}
     >
       <div className="w-full max-w-sm">
         <SetupForm />

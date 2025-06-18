@@ -16,7 +16,7 @@ const openSans = Open_Sans({
 export default async function Page() {
   return (
     <div
-      className={`h-screen -mt-16 flex flex-col justify-center items-center ${openSans.className}`}
+      className={`h-screen -mt-18 flex flex-col justify-center items-center ${openSans.className}`}
     >
       <Tabs defaultValue="purchases" className="w-100 h-125">
         <TabsList>
