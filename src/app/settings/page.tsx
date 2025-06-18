@@ -1,16 +1,16 @@
-import { Open_Sans } from "next/font/google";
 import type { Metadata } from "next";
 import SettingsForm from "@/components/SettingsForm";
 import { getSettings } from "../actions/settings";
-
-export const metadata: Metadata = {
-  title: "crystll. | settings",
-};
+import { Open_Sans } from "next/font/google";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
   display: "swap",
 });
+
+export const metadata: Metadata = {
+  title: "crystll. | settings",
+};
 
 export default async function Page() {
   const res = await getSettings();
@@ -20,9 +20,7 @@ export default async function Page() {
   }
 
   return (
-    <div
-      className={`h-screen -mt-18 ${openSans.className} p-6 flex w-full justify-center items-center`}
-    >
+    <div className="h-screen -mt-18 p-6 flex w-full justify-center items-center">
       <div className="w-full max-w-sm">
         <SettingsForm initialBalance={initialBalance} />
       </div>
