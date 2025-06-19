@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { SiGoogle } from "@icons-pack/react-simple-icons";
 import { Open_Sans } from "next/font/google";
+import Link from "next/link";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -46,6 +47,17 @@ export default function LoginForm() {
               </Button>
             </div>
           </form>
+          <div className="mt-4 w-full flex flex-col justify-center items-center gap-4">
+            <p>
+              Dont&apos;t have an account?{" "}
+              <Link
+                href="/signup"
+                className="underline hover:no-underline text-ocean font-semibold underline-offset-3"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>
