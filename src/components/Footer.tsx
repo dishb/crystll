@@ -11,12 +11,12 @@ export default function Footer() {
             alt="Our product's logo, a blue crystal."
             width={35.4}
             height={36}
-            className="w-14 h-auto"
+            className="w-14 h-auto md:w-18"
           />
-          <h2 className="text-4xl">crystll.</h2>
+          <h2 className="text-xl md:text-5xl">crystll.</h2>
         </div>
 
-        <p className="text-xl mt-8">
+        <p className="mt-8 text-lg md:text-2xl">
           &copy; 2025 Dishant Bhandula. All rights reserved.
         </p>
       </div>
