@@ -5,7 +5,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "./ui/button";
-import { LoaderCircle, Save, Trash } from "lucide-react";
+import { LoaderCircle, Save, Trash, X } from "lucide-react";
 import {
   Form,
   FormField,
@@ -29,6 +29,17 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { deleteAccount } from "@/app/actions/account";
 import { signOut } from "next-auth/react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -129,15 +140,44 @@ export default function SettingsForm({ initialBalance }: SettingsFormProps) {
           </form>
         </Form>
 
-        <Button
-          className={`border-destructive hover:bg-destructive/90 hover:text-white text-destructive w-full hover:cursor-pointer mt-6 ${openSans.className}`}
-          variant="outline"
-          onClick={onClick}
-          disabled={loading}
-        >
-          <Trash />
-          Delete account
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              className={`border-destructive hover:bg-destructive/90 hover:text-white text-destructive w-full hover:cursor-pointer mt-6 ${openSans.className}`}
+              variant="outline"
+            >
+              <Trash />
+              Delete account
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-2xl font-semibold">
+                Are you absolutely sure?
+              </AlertDialogTitle>
+              <AlertDialogDescription className={openSans.className}>
+                This action cannot be undone. This will permanently delete your
+                account and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel
+                className={`hover:cursor-pointer ${openSans.className}`}
+              >
+                <X /> No, cancel deletion
+              </AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <Button
+                  onClick={onClick}
+                  disabled={loading}
+                  className={`bg-background border-1 border-destructive hover:bg-destructive/90 hover:text-white text-destructive hover:cursor-pointer ${openSans.className}`}
+                >
+                  <Trash /> Yes, continue
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </CardContent>
     </Card>
   );
