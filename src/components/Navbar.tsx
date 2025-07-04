@@ -30,16 +30,18 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm h-18">
       <div className={`flex-1 flex justify-between px-10 items-center`}>
-        <Link href="/" className="flex-1 flex justify-start items-center gap-2">
-          <Image
-            src="/logo.svg"
-            alt="Our product's logo, a blue crystal."
-            width={35.4}
-            height={36}
-            className="w-8 h-auto"
-          />
-          <h2 className="text-2xl">crystll.</h2>
-        </Link>
+        <div className="flex-1 flex justify-start items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.svg"
+              alt="Our product's logo, a blue crystal."
+              width={35.4}
+              height={36}
+              className="w-8 h-auto"
+            />
+            <h2 className="text-2xl">crystll.</h2>
+          </Link>
+        </div>
 
         <div className="flex-2 flex justify-center items-center gap-4">
           {isAuthedPath(pathname) ? (
