@@ -30,7 +30,7 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 left-0 w-full flex flex-col bg-white/70 backdrop-blur-sm h-18">
       <div className={`flex-1 flex justify-between px-10 items-center`}>
-        <div className="flex-1 flex justify-start items-center gap-2">
+        <div className="flex-1 flex">
           <Link href="/" className="flex items-center gap-2">
             <Image
               src="/logo.svg"
