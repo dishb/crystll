@@ -59,8 +59,8 @@ export default function AccountOverview() {
         </Button>
       </div>
 
-      <div className="flex gap-4">
-        <Card className="flex-1">
+      <div className="grid grid-cols-3 gap-4">
+        <Card>
           <CardContent>
             <p className="uppercase mb-2 text-grape flex gap-2 items-center">
               <CircleDollarSign /> Balance
@@ -75,7 +75,7 @@ export default function AccountOverview() {
           </CardContent>
         </Card>
 
-        <Card className="flex-1">
+        <Card>
           <CardContent>
             <p className="uppercase mb-2 text-ocean flex gap-2 items-center">
               <BanknoteArrowDown /> Expenses
@@ -90,7 +90,7 @@ export default function AccountOverview() {
           </CardContent>
         </Card>
 
-        <Card className="flex-1">
+        <Card>
           <CardContent>
             <p className="uppercase mb-2 text-blue flex gap-2 items-center">
               <BanknoteArrowUp /> Earnings
