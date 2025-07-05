@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import AnimatedCounter from "./AnimatedCounter";
 import { Open_Sans } from "next/font/google";
+import { motion } from "motion/react";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -60,50 +61,68 @@ export default function AccountOverview() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <Card>
-          <CardContent>
-            <p className="uppercase mb-2 text-grape flex gap-2 items-center">
-              <CircleDollarSign /> Balance
-            </p>
-            <p className="text-4xl">
-              <AnimatedCounter
-                from={0}
-                to={balanceDisplay ?? 0}
-                format="currency"
-              />
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, transform: "translateX(-5%)" }}
+          animate={{ opacity: 1, transform: "translateX(0)" }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card>
+            <CardContent>
+              <p className="uppercase mb-2 text-grape flex gap-2 items-center">
+                <CircleDollarSign /> Balance
+              </p>
+              <p className="text-4xl">
+                <AnimatedCounter
+                  from={0}
+                  to={balanceDisplay ?? 0}
+                  format="currency"
+                />
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card>
-          <CardContent>
-            <p className="uppercase mb-2 text-ocean flex gap-2 items-center">
-              <BanknoteArrowDown /> Expenses
-            </p>
-            <p className="text-4xl">
-              <AnimatedCounter
-                from={0}
-                to={expenseDisplay ?? 0}
-                format="currency"
-              />
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, transform: "translateX(-5%)" }}
+          animate={{ opacity: 1, transform: "translateX(0)" }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <Card>
+            <CardContent>
+              <p className="uppercase mb-2 text-ocean flex gap-2 items-center">
+                <BanknoteArrowDown /> Expenses
+              </p>
+              <p className="text-4xl">
+                <AnimatedCounter
+                  from={0}
+                  to={expenseDisplay ?? 0}
+                  format="currency"
+                />
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card>
-          <CardContent>
-            <p className="uppercase mb-2 text-blue flex gap-2 items-center">
-              <BanknoteArrowUp /> Earnings
-            </p>
-            <p className="text-4xl">
-              <AnimatedCounter
-                from={0}
-                to={earningDisplay ?? 0}
-                format="currency"
-              />
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, transform: "translateX(-5%)" }}
+          animate={{ opacity: 1, transform: "translateX(0)" }}
+          transition={{ duration: 0.5, delay: 1 }}
+        >
+          <Card>
+            <CardContent>
+              <p className="uppercase mb-2 text-blue flex gap-2 items-center">
+                <BanknoteArrowUp /> Earnings
+              </p>
+              <p className="text-4xl">
+                <AnimatedCounter
+                  from={0}
+                  to={earningDisplay ?? 0}
+                  format="currency"
+                />
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );

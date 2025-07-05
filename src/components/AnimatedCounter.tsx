@@ -13,22 +13,18 @@ export default function AnimatedCounter({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
 
+  const formatter =
+    format === "currency"
+      ? (v: number) =>
+          new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(v)
+      : (v: number) => v.toFixed(0);
+
   useIsomorphicLayoutEffect(() => {
     const element = ref.current;
-
-    if (!element) return;
-    if (!inView) return;
-
-    const formatter =
-      format === "currency"
-        ? (v: number) =>
-            new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(v)
-        : (v: number) => v.toFixed(0);
-
-    element.textContent = formatter(from);
+    if (!element || !inView) return;
 
     if (window.matchMedia("(prefers-reduced-motion)").matches) {
       element.textContent = formatter(to);
@@ -44,10 +40,13 @@ export default function AnimatedCounter({
       },
     });
 
-    return () => {
-      controls.stop();
-    };
+    return () => controls.stop();
   }, [ref, inView, from, to]);
 
-  return <span ref={ref} />;
+  return (
+    <span className="inline-block relative">
+      <span className="invisible block absolute">{formatter(to)}</span>
+      <span ref={ref} />
+    </span>
+  );
 }
