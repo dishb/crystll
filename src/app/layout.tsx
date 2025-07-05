@@ -32,7 +32,7 @@ export default function RootLayout({
         <SessionProvider>
           <div className="min-h-screen">
             <Navbar />
-            <main className="16">{children}</main>
+            <main>{children}</main>
           </div>
         </SessionProvider>
         <FooterWrapper />

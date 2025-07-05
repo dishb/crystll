@@ -47,14 +47,6 @@ export default function Navbar() {
           {isAuthedPath(pathname) ? (
             <>
               <Link
-                href="/"
-                className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
-                  pathname === "/home" ? "italic text-grape" : ""
-                }`}
-              >
-                Home
-              </Link>
-              <Link
                 href="/upload"
                 className={`inline-block min-w-15 text-lg text-center hover:italic hover:text-ocean ${
                   pathname === "/upload" ? "italic text-grape" : ""

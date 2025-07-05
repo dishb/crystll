@@ -63,15 +63,11 @@ export default function SettingsForm({ initialBalance }: SettingsFormProps) {
     });
 
     const result = await deleteAccount();
-
-    if (result.ok) {
-      toast.success("Account deleted", {
-        description: "Your account has been deleted successfully.",
-      });
-      signOut({ callbackUrl: "/" });
-    } else {
+    if (!result.ok) {
       toast.error("500: Internal Server Error", { description: result.error });
     }
+
+    signOut({ callbackUrl: "/" });
   }
 
   async function onSubmit(values: { balance: number }) {
