@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
 import "./globals.css";
 import FooterWrapper from "@/components/FooterWrapper";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import Navbar from "@/components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/sonner";
@@ -36,8 +34,6 @@ export default function RootLayout({
           </div>
         </SessionProvider>
         <FooterWrapper />
-        <SpeedInsights />
-        <Analytics />
         <Toaster richColors closeButton theme="light" />
       </body>
     </html>
